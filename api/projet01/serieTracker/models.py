@@ -10,12 +10,14 @@ class Utilisateur(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Serie(models.Model):
     nom = models.CharField(max_length=100)
     est_archive = models.BooleanField(default=False)
 
     def __str__(self):
         return self.nom
+
 
 class Episode(models.Model):
     saison = models.IntegerField()
@@ -25,6 +27,7 @@ class Episode(models.Model):
 
     def __str__(self):
         return f"{self.serie.nom} S{self.saison}E{self.episode}"
+
 
 class Vu(models.Model):
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
@@ -36,6 +39,7 @@ class Vu(models.Model):
 
     def __str__(self):
         return f"{self.utilisateur} a vu {self.episode}"
+
 
 class Suivi(models.Model):
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
