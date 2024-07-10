@@ -3,3 +3,6 @@
 /env
 /projet01/projet01/__pycache__
 /projet01/db.sqlite3
+/projet01/serieTracker/__pycache__
+/projet01/serieTracker/migrations/0001_initial.py
+/projet01/serieTracker/migrations/__pycache__/
