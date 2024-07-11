@@ -20,6 +20,9 @@ from serieTracker import api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    # path('api-auth/', include('rest_framework.urls')),
+    path('api-auth/signup/', api.SignUpView.as_view(), name='signup'),
+    path('api-auth/login/', api.LoginView.as_view(), name='login'),
+    path('api-auth/logout/', api.LogoutView.as_view(), name='logout'),
     path('series/', api.SerieListView.as_view(), name='serie-list'),
 ]
