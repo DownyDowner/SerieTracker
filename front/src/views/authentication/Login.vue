@@ -1,0 +1,60 @@
+<template>
+  <v-container
+    fluid
+    class="align-start border-app"
+    style="max-width: 500px; max-height: 500px"
+  >
+    <v-card rounded="lg" style="max-width: 400px" class="mx-auto my-auto">
+      <v-card-title style="word-break: keep-all">
+        <h2 class="text-primary text-center">Connexion</h2>
+        <h4 class="text-center mt-2">Veuillez entrer vos identifiants</h4>
+      </v-card-title>
+      <v-card-text class="mt-5">
+        <v-form v-model="isValid">
+          <v-text-field
+            class="mb-2"
+            label="Nom d'utilisateur"
+            rounded="lg"
+            prepend-inner-icon="mdi-account"
+            v-model="authModel.username"
+            autofocus
+            :rules="stringRules"
+          />
+          <v-text-field
+            class="mb-2"
+            label="Mot de passe"
+            rounded="lg"
+            prepend-inner-icon="mdi-lock"
+            :append-inner-icon="showPassword ? `mdi-eye` : 'mdi-eye-off'"
+            :type="showPassword ? 'text' : 'password'"
+            v-model="authModel.password"
+            :rules="stringRules"
+            @keypress.enter="login"
+            @click:append-inner="showPassword = !showPassword"
+          />
+        </v-form>
+
+        <v-btn color="primary" block :disabled="!isValid" @click="login">
+          Connexion
+        </v-btn>
+      </v-card-text>
+    </v-card>
+  </v-container>
+</template>
+
+<script setup lang="ts">
+import { reactive, ref } from "vue";
+
+const stringRules = ref<any[]>([(v: string) => !!v || "Valeur obligatoire"]);
+const showPassword = ref<boolean>(false);
+const isValid = ref<boolean>(true);
+
+const authModel = reactive({
+  username: "",
+  password: "",
+});
+
+async function login() {
+  console.log("Se connecte", authModel);
+}
+</script>
