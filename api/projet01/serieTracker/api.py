@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
+from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.generics import ListAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -26,7 +26,7 @@ class SignUpView(CreateAPIView):
         )
         token, created = Token.objects.get_or_create(user=user)
 
-        return Response({'token': token.key}, status=status.HTTP_201_CREATED)
+        return Response(token.key, status=status.HTTP_201_CREATED)
 
 
 class LoginView(APIView):
@@ -39,7 +39,7 @@ class LoginView(APIView):
 
         if user is not None:
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key}, status=status.HTTP_200_OK)
+            return Response(token.key, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid Credentials'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -55,6 +55,8 @@ class LogoutView(APIView):
 
 class ActiveSerieListView(ListAPIView):
     serializer_class = SerieSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         return Serie.objects.filter(est_archive=False)

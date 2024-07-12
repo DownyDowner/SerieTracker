@@ -13,6 +13,7 @@ export const useAuthenticationStore = defineStore('authentication', () => {
     try {
       loading.value = true;
       token.value = await AuthApi.login(username, password);
+      console.log('token', token.value)
       localStorage.setItem('Auth-Token', token.value);
     } catch (error) {
       console.error('Error while logging in:', error);

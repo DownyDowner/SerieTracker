@@ -3,7 +3,7 @@ import axios from "axios";
 export abstract class AuthApi {
     static API_URL = "http://localhost:8000/api-auth/";
   
-    static async login(username: string, password: string) {
+    static async login(username: string, password: string): Promise<string> {
         const response = await axios.post(`${AuthApi.API_URL}login/`, {
           username,
           password,
@@ -11,7 +11,7 @@ export abstract class AuthApi {
         return response.data;
     }
     
-    static async signup(username: string, password: string) {
+    static async signup(username: string, password: string): Promise<string> {
         const response = await axios.post(`${AuthApi.API_URL}signup/`, {
           username,
           password,
