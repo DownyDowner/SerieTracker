@@ -68,6 +68,9 @@
 import { reactive, ref } from "vue";
 import router from "../../router";
 import { NavigationConst } from "../../router/routeConst";
+import { useAuthenticationStore } from "../../stores/authentication";
+
+const authStore = useAuthenticationStore();
 
 const stringRules = ref<any[]>([(v: string) => !!v || "Valeur obligatoire"]);
 const showPassword = ref<boolean>(false);
@@ -81,11 +84,11 @@ const authModel = reactive({
   password: "",
 });
 
-function signUp() {
+async function signUp() {
   passwordsMismatch.value = authModel.password !== confirmPassword.value;
 
   if (!passwordsMismatch.value) {
-    console.log("Ok");
+    await authStore.signup(authModel.username, authModel.password);
   } else {
     authModel.password = "";
     confirmPassword.value = "";
