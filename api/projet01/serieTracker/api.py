@@ -53,6 +53,8 @@ class LogoutView(APIView):
         return Response({'detail': 'Successfully logged out.'}, status=status.HTTP_200_OK)
 
 
-class SerieListView(ListAPIView):
-    queryset = Serie.objects.all()
+class ActiveSerieListView(ListAPIView):
     serializer_class = SerieSerializer
+
+    def get_queryset(self):
+        return Serie.objects.filter(est_archive=False)
