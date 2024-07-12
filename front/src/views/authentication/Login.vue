@@ -46,6 +46,14 @@
           Créer un compte
         </v-btn>
       </v-card-text>
+      <v-alert
+        v-if="authModel.errorMessages"
+        type="error"
+        class="mt-2"
+        dismissible
+      >
+        {{ authModel.errorMessages }}
+      </v-alert>
     </v-card>
   </v-container>
 </template>
@@ -65,15 +73,17 @@ const isValid = ref<boolean>(true);
 const authModel = reactive({
   username: "",
   password: "",
+  errorMessages: "",
 });
 
 async function login() {
   try {
-    console.log("Se connecte", authModel);
     await authStore.login(authModel.username, authModel.password);
-    console.log("Ok");
+    router.push({ name: NavigationConst.nameHome });
   } catch (err) {
-    console.error(err);
+    authModel.errorMessages =
+      "Échec de la connexion. Veuillez vérifier vos identifiants et réessayer";
+    authModel.password = "";
   }
 }
 

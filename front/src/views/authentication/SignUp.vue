@@ -60,6 +60,14 @@
           Annuler
         </v-btn>
       </v-card-text>
+      <v-alert
+        v-if="authModel.errorMessages"
+        type="error"
+        class="mt-2"
+        dismissible
+      >
+        {{ authModel.errorMessages }}
+      </v-alert>
     </v-card>
   </v-container>
 </template>
@@ -82,16 +90,21 @@ const passwordsMismatch = ref<boolean>(false);
 const authModel = reactive({
   username: "",
   password: "",
+  errorMessages: "",
 });
 
 async function signUp() {
-  passwordsMismatch.value = authModel.password !== confirmPassword.value;
-
-  if (!passwordsMismatch.value) {
-    await authStore.signup(authModel.username, authModel.password);
-  } else {
-    authModel.password = "";
-    confirmPassword.value = "";
+  try {
+    passwordsMismatch.value = authModel.password !== confirmPassword.value;
+    if (!passwordsMismatch.value) {
+      await authStore.signup(authModel.username, authModel.password);
+      router.push({ name: NavigationConst.nameHome });
+    } else {
+      authModel.password = "";
+      confirmPassword.value = "";
+    }
+  } catch (err) {
+    authModel.errorMessages = "Échec de l'enregistrement. Veuillez réessayer";
   }
 }
 
