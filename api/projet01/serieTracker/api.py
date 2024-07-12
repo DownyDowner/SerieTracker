@@ -71,4 +71,4 @@ class ActiveSerieListView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Serie.objects.filter(est_archive=False)
+        return Serie.objects.filter(est_archive=False).order_by('nom')
