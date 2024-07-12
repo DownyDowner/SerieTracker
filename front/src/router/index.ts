@@ -9,6 +9,12 @@ const routes: Array<RouteRecordRaw> = [
       // beforeEnter: checkIsNotAuthenticated,
       meta: { title: NavigationConst.titleLogin },
     },
+    {
+      path: NavigationConst.routeSignUp,
+      name: NavigationConst.nameSignUp,
+      component: () => import('../views/authentication/SignUp.vue'),
+      meta: { title:NavigationConst.titleSignup },
+    },
 ]
 
 const router = createRouter({

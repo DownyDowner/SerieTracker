@@ -6,7 +6,7 @@
   >
     <v-card rounded="lg" style="max-width: 400px" class="mx-auto my-auto">
       <v-card-title style="word-break: keep-all">
-        <h2 class="text-primary text-center">Connexion</h2>
+        <h2 class="text-primary text-center">Enregistrement</h2>
         <h4 class="text-center mt-2">Veuillez entrer vos identifiants</h4>
       </v-card-title>
       <v-card-text class="mt-5">
@@ -29,21 +29,35 @@
             :type="showPassword ? 'text' : 'password'"
             v-model="authModel.password"
             :rules="stringRules"
-            @keypress.enter="login"
             @click:append-inner="showPassword = !showPassword"
           />
+          <v-text-field
+            class="mb-2"
+            label="Confirmation du mot de passe"
+            rounded="lg"
+            prepend-inner-icon="mdi-lock"
+            :append-inner-icon="showConfirmPassword ? `mdi-eye` : 'mdi-eye-off'"
+            :type="showConfirmPassword ? 'text' : 'password'"
+            v-model="confirmPassword"
+            :rules="stringRules"
+            @keypress.enter="signUp"
+            @click:append-inner="showConfirmPassword = !showConfirmPassword"
+          />
+          <v-alert v-if="passwordsMismatch" type="error" outlined class="mb-2">
+            Les mots de passe ne correspondent pas.
+          </v-alert>
         </v-form>
 
-        <v-btn color="primary" block :disabled="!isValid" @click="login">
-          Connexion
+        <v-btn color="primary" block :disabled="!isValid" @click.stop="signUp">
+          S'enregistrer
         </v-btn>
         <v-btn
-          @click.stop="createAccount"
+          @click.stop="backToLogin"
           color="grey-lighten-3 mt-1"
           variant="flat"
           block
         >
-          Créer un compte
+          Annuler
         </v-btn>
       </v-card-text>
     </v-card>
@@ -57,18 +71,28 @@ import { NavigationConst } from "../../router/routeConst";
 
 const stringRules = ref<any[]>([(v: string) => !!v || "Valeur obligatoire"]);
 const showPassword = ref<boolean>(false);
+const showConfirmPassword = ref<boolean>(false);
 const isValid = ref<boolean>(true);
+const confirmPassword = ref<string>("");
+const passwordsMismatch = ref<boolean>(false);
 
 const authModel = reactive({
   username: "",
   password: "",
 });
 
-async function login() {
-  console.log("Se connecte", authModel);
+function signUp() {
+  passwordsMismatch.value = authModel.password !== confirmPassword.value;
+
+  if (!passwordsMismatch.value) {
+    console.log("Ok");
+  } else {
+    authModel.password = "";
+    confirmPassword.value = "";
+  }
 }
 
-function createAccount() {
-  router.push({ name: NavigationConst.nameSignUp });
+function backToLogin() {
+  router.push({ name: NavigationConst.nameLogin });
 }
 </script>
