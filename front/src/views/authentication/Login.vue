@@ -54,6 +54,9 @@
 import { reactive, ref } from "vue";
 import router from "../../router";
 import { NavigationConst } from "../../router/routeConst";
+import { useAuthenticationStore } from "../../stores/authentication";
+
+const authStore = useAuthenticationStore();
 
 const stringRules = ref<any[]>([(v: string) => !!v || "Valeur obligatoire"]);
 const showPassword = ref<boolean>(false);
@@ -65,7 +68,13 @@ const authModel = reactive({
 });
 
 async function login() {
-  console.log("Se connecte", authModel);
+  try {
+    console.log("Se connecte", authModel);
+    await authStore.login(authModel.username, authModel.password);
+    console.log("Ok");
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 function createAccount() {

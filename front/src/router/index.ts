@@ -13,6 +13,7 @@ const routes: Array<RouteRecordRaw> = [
       path: NavigationConst.routeSignUp,
       name: NavigationConst.nameSignUp,
       component: () => import('../views/authentication/SignUp.vue'),
+      // beforeEnter: checkIsNotAuthenticated,
       meta: { title:NavigationConst.titleSignup },
     },
 ]
