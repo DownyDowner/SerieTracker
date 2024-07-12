@@ -13,7 +13,6 @@ export const useAuthenticationStore = defineStore('authentication', () => {
     try {
       loading.value = true;
       token.value = await AuthApi.login(username, password);
-      console.log('token', token.value)
       localStorage.setItem('Auth-Token', token.value);
     } catch (error) {
       console.error('Error while logging in:', error);
@@ -36,6 +35,32 @@ export const useAuthenticationStore = defineStore('authentication', () => {
     }
   }
 
+  async function logout() {
+    try {
+      loading.value = true
+      await AuthApi.logout();
+    }catch (error) {
+      console.error('Error while logging in:', error);
+      throw error;
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  function loadUser(): void {
+    try {
+      token.value = localStorage.getItem('Auth-Token') || '';
+      console.log('username', username.value)
+    } catch (err) {
+      resetToken();
+    }
+  }
+
+  function resetToken() : void {
+    token.value = '';
+    user.value = null;
+  }
+
   return {
     loading,
     token,
@@ -43,5 +68,7 @@ export const useAuthenticationStore = defineStore('authentication', () => {
     username,
     login,
     signup,
+    logout,
+    loadUser,
   };
 });

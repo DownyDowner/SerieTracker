@@ -18,4 +18,23 @@ export abstract class AuthApi {
         });
         return response.data;
     }
+
+    static async logout(): Promise<void> {
+      const token = localStorage.getItem('Auth-Token');
+      if (!token) {
+        return;
+      }
+
+      try {
+        await axios.post(`${AuthApi.API_URL}logout/`, {}, {
+          headers: {
+            'Authorization': `Token ${token}`
+          }
+        });
+        localStorage.removeItem('Auth-Token');
+      } catch (error) {
+        console.error('Error logging out:', error);
+        throw error;
+      }
+    }
 }
