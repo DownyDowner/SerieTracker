@@ -52,6 +52,6 @@ function displayRoute() {
 
 async function logout() {
   await authStore.logout();
-  router.push({ name: NavigationConst.nameLogin });
+  router.replace({ name: NavigationConst.nameLogin });
 }
 </script>

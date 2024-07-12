@@ -53,6 +53,18 @@ class LogoutView(APIView):
         return Response({'detail': 'Successfully logged out.'}, status=status.HTTP_200_OK)
 
 
+class UserDetailView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        user_data = {
+            'username': user.username,
+        }
+        return Response(user_data, status=status.HTTP_200_OK)
+
+
 class ActiveSerieListView(ListAPIView):
     serializer_class = SerieSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]

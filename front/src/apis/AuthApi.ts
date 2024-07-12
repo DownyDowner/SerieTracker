@@ -1,10 +1,10 @@
 import axios from "axios";
 
 export abstract class AuthApi {
-    static API_URL = "http://localhost:8000/api-auth/";
+    static API_URL = "http://localhost:8000/api-auth";
   
     static async login(username: string, password: string): Promise<string> {
-        const response = await axios.post(`${AuthApi.API_URL}login/`, {
+        const response = await axios.post(`${AuthApi.API_URL}/login/`, {
           username,
           password,
         });
@@ -12,7 +12,7 @@ export abstract class AuthApi {
     }
     
     static async signup(username: string, password: string): Promise<string> {
-        const response = await axios.post(`${AuthApi.API_URL}signup/`, {
+        const response = await axios.post(`${AuthApi.API_URL}/signup/`, {
           username,
           password,
         });
@@ -26,7 +26,7 @@ export abstract class AuthApi {
       }
 
       try {
-        await axios.post(`${AuthApi.API_URL}logout/`, {}, {
+        await axios.post(`${AuthApi.API_URL}/logout/`, {}, {
           headers: {
             'Authorization': `Token ${token}`
           }
@@ -36,5 +36,15 @@ export abstract class AuthApi {
         console.error('Error logging out:', error);
         throw error;
       }
+    }
+
+    static async getUser(token: string) {
+      const response = await axios.get(`${AuthApi.API_URL}/user/`, {
+        headers: {
+          'Authorization': `Token ${token}`
+        }
+      });
+
+      return response.data;
     }
 }

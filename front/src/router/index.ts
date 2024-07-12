@@ -42,15 +42,15 @@ router.afterEach((to: RouteLocationNormalized) => {
   document.title = `${to.meta?.title ?? ''} · ${NavigationConst.nomApp}`;
 });
 
-function checkIsNotAuthenticated() {
+async function checkIsNotAuthenticated() {
   const authStore = useAuthenticationStore();
-  authStore.loadUser();
+  await authStore.loadUser();
   if (authStore.token) return { name: NavigationConst.nameHome };
 }
 
-function checkIsAuthenticated(to: RouteLocationNormalized) {
+async function checkIsAuthenticated(to: RouteLocationNormalized) {
   const authStore = useAuthenticationStore();
-  authStore.loadUser();
+  await authStore.loadUser();
   if (!authStore.token) return { name: NavigationConst.nameLogin, query: { redirect: to.path } };
 }
 

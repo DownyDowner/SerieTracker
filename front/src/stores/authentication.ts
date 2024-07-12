@@ -47,11 +47,16 @@ export const useAuthenticationStore = defineStore('authentication', () => {
     }
   }
 
-  function loadUser(): void {
+  async function loadUser(): Promise<void> {
+    if (!token.value) {
+      user.value = null;
+      return;
+    }
     try {
-      token.value = localStorage.getItem('Auth-Token') || '';
-      console.log('username', username.value)
-    } catch (err) {
+      const userData = await AuthApi.getUser(token.value);
+      user.value = userData;
+    } catch (error) {
+      console.error('Error fetching user:', error);
       resetToken();
     }
   }
