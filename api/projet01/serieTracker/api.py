@@ -72,3 +72,16 @@ class ActiveSerieListView(ListAPIView):
 
     def get_queryset(self):
         return Serie.objects.filter(est_archive=False).order_by('nom')
+
+
+class SerieView(APIView):
+    serializer_class = SerieSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        serializer = SerieSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

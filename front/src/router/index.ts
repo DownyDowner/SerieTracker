@@ -26,7 +26,7 @@ const routes: Array<RouteRecordRaw> = [
         {
           path: '',
           name: NavigationConst.nameHome,
-          component: () => import('../views/Home.vue'),
+          component: () => import('../views/home/Home.vue'),
           meta: { title: NavigationConst.titleHome },
         },
       ],

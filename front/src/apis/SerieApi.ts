@@ -14,4 +14,13 @@ export abstract class SerieApi {
         
         return response.data.map(d => new Serie(d));
     }
+
+    static async create(serie: Serie) : Promise<Serie> {
+        const response = await axios.post<SerieDTO>(SerieApi.API_URL, serie, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+
+        return new Serie(response.data);
+    }
 }
