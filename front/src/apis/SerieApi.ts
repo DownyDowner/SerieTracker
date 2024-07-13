@@ -1,6 +1,7 @@
 import axios from "axios";
 import { SerieList, SerieListDTO } from "../models/SerieList";
 import { useAuthenticationStore } from "../stores/authentication";
+import { SerieFull, SerieFullDTO } from "../models/SerieFull";
 
 export abstract class SerieApi {
     static API_URL = "http://localhost:8000/series/";
@@ -13,6 +14,15 @@ export abstract class SerieApi {
         });
         
         return response.data.map(d => new SerieList(d));
+    }
+
+    static async getById(id: number): Promise<SerieFull> {
+        const response = await axios.get<SerieFullDTO>(`${SerieApi.API_URL}${id}/`, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+
+        return new SerieFull(response.data)
     }
 
     static async create(serie: SerieList) : Promise<SerieList> {

@@ -15,5 +15,9 @@ export class NavigationConst {
     public static readonly routeHome = '/home'
     public static readonly nameHome = 'Home'
     public static readonly titleHome = 'Home'
+
+    public static readonly routeSerie = '/serie/:id'
+    public static readonly nameSerie = 'Serie'
+    public static readonly titleSerie = 'Série'
   }
   

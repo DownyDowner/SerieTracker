@@ -29,6 +29,12 @@ const routes: Array<RouteRecordRaw> = [
           component: () => import('../views/home/Home.vue'),
           meta: { title: NavigationConst.titleHome },
         },
+        {
+          path: NavigationConst.routeSerie,
+          name: NavigationConst.nameSerie,
+          component: () => import('../views/home/HomeSerie.vue'),
+          meta: { title: NavigationConst.titleSerie },
+        }
       ],
     },
 ]

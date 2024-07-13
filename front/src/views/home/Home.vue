@@ -28,7 +28,11 @@
           </v-btn>
         </v-card-title>
         <v-card-actions class="justify-center">
-          <v-btn prepend-icon="mdi-information-outline" color="primary">
+          <v-btn
+            prepend-icon="mdi-information-outline"
+            color="primary"
+            @click.stop="openDetailSerie(serie)"
+          >
             Voir plus
           </v-btn>
         </v-card-actions>
@@ -43,6 +47,8 @@ import { onMounted, ref } from "vue";
 import { useSerieStore } from "../../stores/serie";
 import EditSerieDialog from "./components/EditSerieDialog.vue";
 import { SerieList } from "../../models/SerieList";
+import { NavigationConst } from "../../router/routeConst";
+import router from "../../router";
 
 const serieStore = useSerieStore();
 
@@ -58,6 +64,13 @@ function openNewSerie() {
 
 function openEditSerie(serie: SerieList) {
   editSerieDialog.value?.openEdit(serie);
+}
+
+function openDetailSerie(model: SerieList) {
+  router.push({
+    name: NavigationConst.nameSerie,
+    params: { id: model.id },
+  });
 }
 
 async function onSerieEdited() {
