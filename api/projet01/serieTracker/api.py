@@ -8,8 +8,8 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Serie
-from .serializers import SerieSerializer, UtilisateurSerializer
+from .models import Episode, Serie
+from .serializers import SerieListSerializer, SerieFullSerializer, UtilisateurSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -66,7 +66,7 @@ class UserDetailView(APIView):
 
 
 class ActiveSerieListView(ListAPIView):
-    serializer_class = SerieSerializer
+    serializer_class = SerieListSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
@@ -75,20 +75,25 @@ class ActiveSerieListView(ListAPIView):
 
 
 class SerieView(APIView):
-    serializer_class = SerieSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def get(self, request, *args, **kwargs):
+        serie = get_object_or_404(Serie, id=kwargs.get('id'))
+        serializer = SerieFullSerializer(serie)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def post(self, request, *args, **kwargs):
-        serializer = SerieSerializer(data=request.data)
+        serializer = SerieListSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def put(self, request, id, *args, **kwargs):
+    def put(self, request, *args, **kwargs):
+        id = kwargs.get('id')
         serie = get_object_or_404(Serie, id=id)
-        serializer = SerieSerializer(serie, data=request.data)
+        serializer = SerieListSerializer(serie, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)

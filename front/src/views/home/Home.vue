@@ -42,7 +42,7 @@
 import { onMounted, ref } from "vue";
 import { useSerieStore } from "../../stores/serie";
 import EditSerieDialog from "./components/EditSerieDialog.vue";
-import { Serie } from "../../models/Serie";
+import { SerieList } from "../../models/SerieList";
 
 const serieStore = useSerieStore();
 
@@ -56,7 +56,7 @@ function openNewSerie() {
   editSerieDialog.value?.openNew();
 }
 
-function openEditSerie(serie: Serie) {
+function openEditSerie(serie: SerieList) {
   editSerieDialog.value?.openEdit(serie);
 }
 

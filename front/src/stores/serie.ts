@@ -1,4 +1,4 @@
-import { Serie } from './../models/Serie';
+import { SerieList } from '../models/SerieList';
 import { ref, Ref } from 'vue';
 import { defineStore } from "pinia";
 import { SerieApi } from '../apis/SerieApi';
@@ -6,7 +6,7 @@ import { SerieApi } from '../apis/SerieApi';
 export const useSerieStore = defineStore('serie', () => {
 
   const isLoading = ref(false);
-  const activeSeries: Ref<Serie[]> = ref([]);
+  const activeSeries: Ref<SerieList[]> = ref([]);
 
   async function getActiveSeries(): Promise<void> {
     try {
@@ -20,7 +20,7 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
-  async function create(serie: Serie) {
+  async function create(serie: SerieList) {
     try {
       isLoading.value = true;
       serie = await SerieApi.create(serie)
@@ -33,7 +33,7 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
-  async function update(serie: Serie) {
+  async function update(serie: SerieList) {
     try {
       isLoading.value = true;
       await SerieApi.update(serie)

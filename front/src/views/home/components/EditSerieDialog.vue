@@ -56,7 +56,7 @@
 
 <script setup lang="ts">
 import { Ref, ref } from "vue";
-import { Serie } from "../../../models/Serie";
+import { SerieList } from "../../../models/SerieList";
 import { useSerieStore } from "../../../stores/serie";
 
 const serieStore = useSerieStore();
@@ -67,14 +67,14 @@ const isLoading = ref(false);
 const isNew = ref(false);
 const newSerie = ref("");
 const requiredRules = [(v: string) => !!v || "Le nom de la série est requis"];
-const model: Ref<Serie | null> = ref(null);
+const model: Ref<SerieList | null> = ref(null);
 
 const openNew = () => {
   isNew.value = true;
   isOpen.value = true;
 };
 
-const openEdit = (serie: Serie) => {
+const openEdit = (serie: SerieList) => {
   model.value = serie;
   newSerie.value = serie.nom;
   isNew.value = false;
@@ -87,11 +87,11 @@ const close = () => {
 };
 
 const emit = defineEmits<{
-  (e: "onSerieEdited", model: Serie): void;
+  (e: "onSerieEdited", model: SerieList): void;
 }>();
 
-function getModel(): Serie {
-  const serie = new Serie();
+function getModel(): SerieList {
+  const serie = new SerieList();
   serie.nom = newSerie.value;
   return serie;
 }

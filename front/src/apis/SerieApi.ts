@@ -1,31 +1,31 @@
 import axios from "axios";
-import { Serie, SerieDTO } from "../models/Serie";
+import { SerieList, SerieListDTO } from "../models/SerieList";
 import { useAuthenticationStore } from "../stores/authentication";
 
 export abstract class SerieApi {
     static API_URL = "http://localhost:8000/series/";
     static authStore = useAuthenticationStore()
   
-    static async getActiveSeries(): Promise<Serie[]> {
-        const response = await axios.get<SerieDTO[]>(`${SerieApi.API_URL}active/` , {
+    static async getActiveSeries(): Promise<SerieList[]> {
+        const response = await axios.get<SerieListDTO[]>(`${SerieApi.API_URL}active/` , {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
         
-        return response.data.map(d => new Serie(d));
+        return response.data.map(d => new SerieList(d));
     }
 
-    static async create(serie: Serie) : Promise<Serie> {
-        const response = await axios.post<SerieDTO>(SerieApi.API_URL, serie, {
+    static async create(serie: SerieList) : Promise<SerieList> {
+        const response = await axios.post<SerieListDTO>(SerieApi.API_URL, serie, {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
 
-        return new Serie(response.data);
+        return new SerieList(response.data);
     }
 
-    static async update(serie: Serie) {
-        await axios.put<SerieDTO>(`${SerieApi.API_URL}${serie.id}/`, serie, {
+    static async update(serie: SerieList) {
+        await axios.put<SerieListDTO>(`${SerieApi.API_URL}${serie.id}/`, serie, {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
