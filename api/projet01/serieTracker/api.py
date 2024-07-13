@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model, authenticate
 from django.contrib.auth.hashers import make_password
-from rest_framework import status
+from rest_framework import status, mixins
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404
+from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404, GenericAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -74,27 +74,24 @@ class ActiveSerieListView(ListAPIView):
         return Serie.objects.filter(est_archive=False).order_by('nom')
 
 
-class SerieView(APIView):
+class SerieDetailView(mixins.UpdateModelMixin, GenericAPIView):
+    queryset = Serie.objects.all()
+    serializer_class = SerieFullSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
 
     def get(self, request, *args, **kwargs):
         serie = get_object_or_404(Serie, id=kwargs.get('id'))
-        serializer = SerieFullSerializer(serie)
+        serializer = self.get_serializer(serie)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def post(self, request, *args, **kwargs):
-        serializer = SerieListSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def put(self, request, *args, **kwargs):
-        id = kwargs.get('id')
-        serie = get_object_or_404(Serie, id=id)
-        serializer = SerieListSerializer(serie, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return self.update(request, *args, **kwargs)
+
+
+class SerieCreateView(CreateAPIView):
+    queryset = Serie.objects.all()
+    serializer_class = SerieListSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
