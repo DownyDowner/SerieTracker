@@ -1,6 +1,6 @@
+import { Serie } from './../models/Serie';
 import { ref, Ref } from 'vue';
 import { defineStore } from "pinia";
-import { Serie } from '../models/Serie';
 import { SerieApi } from '../apis/SerieApi';
 
 export const useSerieStore = defineStore('serie', () => {
@@ -33,10 +33,23 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function update(serie: Serie) {
+    try {
+      isLoading.value = true;
+      await SerieApi.update(serie)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
     getActiveSeries,
     create,
+    update,
   };
 });

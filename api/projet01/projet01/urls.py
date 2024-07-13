@@ -27,4 +27,5 @@ urlpatterns = [
     path('api-auth/user/', api.UserDetailView.as_view(), name='user-detail'),
     path('series/active/', api.ActiveSerieListView.as_view(), name='series-active-list'),
     path('series/', api.SerieView.as_view(), name='series'),
+    path('series/<int:id>/', api.SerieView.as_view(), name='serie'),
 ]

@@ -10,7 +10,8 @@
     <v-form v-model="isValid" @submit.prevent>
       <v-card min-height="200">
         <v-toolbar flat dark color="primary">
-          <v-toolbar-title>Ajout d'une série</v-toolbar-title>
+          <v-toolbar-title v-if="isNew">Ajout d'une série</v-toolbar-title>
+          <v-toolbar-title v-else>Modification d'une série</v-toolbar-title>
           <v-spacer />
           <v-btn icon dark @click.stop="close">
             <v-icon>mdi-close</v-icon>
@@ -34,7 +35,6 @@
             @click.stop="close"
           >
             Annuler
-            <v-tooltip text="Annuler" location="top" activator="parent" />
           </v-btn>
           <v-btn
             type="submit"
@@ -47,11 +47,6 @@
             :loading="isLoading"
           >
             Sauvegarder
-            <v-tooltip
-              text="Ajouter la série"
-              location="top"
-              activator="parent"
-            />
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -60,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { Ref, ref } from "vue";
 import { Serie } from "../../../models/Serie";
 import { useSerieStore } from "../../../stores/serie";
 
@@ -69,19 +64,30 @@ const serieStore = useSerieStore();
 const isOpen = ref(false);
 const isValid = ref(false);
 const isLoading = ref(false);
+const isNew = ref(false);
 const newSerie = ref("");
 const requiredRules = [(v: string) => !!v || "Le nom de la série est requis"];
+const model: Ref<Serie | null> = ref(null);
 
-function open() {
+const openNew = () => {
+  isNew.value = true;
   isOpen.value = true;
-}
+};
+
+const openEdit = (serie: Serie) => {
+  model.value = serie;
+  newSerie.value = serie.nom;
+  isNew.value = false;
+  isOpen.value = true;
+};
+
 const close = () => {
   isOpen.value = false;
   newSerie.value = "";
 };
 
 const emit = defineEmits<{
-  (e: "onSerieCreated", model: Serie): void;
+  (e: "onSerieEdited", model: Serie): void;
 }>();
 
 function getModel(): Serie {
@@ -93,9 +99,16 @@ function getModel(): Serie {
 async function create() {
   try {
     if (!isValid.value) return;
-    let modelUpdated = getModel();
-    modelUpdated = await serieStore.create(modelUpdated);
-    emit("onSerieCreated", modelUpdated);
+    if (isNew.value) {
+      let modelUpdated = getModel();
+      modelUpdated = await serieStore.create(modelUpdated);
+      emit("onSerieEdited", modelUpdated);
+    } else {
+      if (!model.value) return;
+      model.value.nom = newSerie.value;
+      await serieStore.update(model.value);
+      emit("onSerieEdited", model.value);
+    }
     close();
   } catch (err: any) {
     console.error("Impossible de créer la série", err);
@@ -105,7 +118,7 @@ async function create() {
 }
 
 defineExpose({
-  open,
-  close,
+  openNew,
+  openEdit,
 });
 </script>

@@ -23,4 +23,11 @@ export abstract class SerieApi {
 
         return new Serie(response.data);
     }
+
+    static async update(serie: Serie) {
+        await axios.put<SerieDTO>(`${SerieApi.API_URL}${serie.id}/`, serie, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+    }
 }

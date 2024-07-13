@@ -20,7 +20,13 @@
       md="4"
     >
       <v-card class="ma-1">
-        <v-card-title class="text-center">{{ serie.nom }}</v-card-title>
+        <v-card-title class="d-flex justify-center align-center">
+          <div class="ml-3">{{ serie.nom }}</div>
+          <v-btn size="small" icon @click.stop="openEditSerie(serie)">
+            <v-tooltip text="Modifier le nom de la série" activator="parent" />
+            <v-icon>mdi-pencil</v-icon>
+          </v-btn>
+        </v-card-title>
         <v-card-actions class="justify-center">
           <v-btn prepend-icon="mdi-information-outline" color="primary">
             Voir plus
@@ -29,13 +35,14 @@
       </v-card>
     </v-col>
   </v-row>
-  <EditSerieDialog ref="editSerieDialog" @on-serie-created="onSerieCreated" />
+  <EditSerieDialog ref="editSerieDialog" @on-serie-edited="onSerieEdited" />
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useSerieStore } from "../../stores/serie";
 import EditSerieDialog from "./components/EditSerieDialog.vue";
+import { Serie } from "../../models/Serie";
 
 const serieStore = useSerieStore();
 
@@ -46,10 +53,14 @@ onMounted(async () => {
 });
 
 function openNewSerie() {
-  editSerieDialog.value?.open();
+  editSerieDialog.value?.openNew();
 }
 
-async function onSerieCreated() {
+function openEditSerie(serie: Serie) {
+  editSerieDialog.value?.openEdit(serie);
+}
+
+async function onSerieEdited() {
   await serieStore.getActiveSeries();
 }
 </script>
