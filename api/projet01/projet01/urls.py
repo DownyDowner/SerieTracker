@@ -28,4 +28,7 @@ urlpatterns = [
     path('series/', api.SerieCreateView.as_view(), name='serie-create'),
     path('series/active/', api.ActiveSerieListView.as_view(), name='series-active-list'),
     path('series/<int:id>/', api.SerieDetailView.as_view(), name='serie-detail'),
+    path('series/<int:id>/update/', api.SerieInfoUpdateView.as_view(), name='serie-title-update'),
+    path('series/<int:id>/update-episodes/', api.SerieEpisodesUpdateView.as_view(), name='serie-episodes-update'),
+
 ]

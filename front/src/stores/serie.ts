@@ -59,6 +59,18 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function updateFull(serie: SerieFull) {
+    try {
+      isLoading.value = true;
+      await SerieApi.updateFull(serie)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
@@ -67,5 +79,6 @@ export const useSerieStore = defineStore('serie', () => {
     getSerieById,
     create,
     update,
+    updateFull,
   };
 });

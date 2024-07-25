@@ -40,7 +40,7 @@
   <v-row no-gutters class="mt-2">
     <v-col class="d-flex justify-end align-center">
       <v-btn class="ma-2" color="grey" @click.stop="close">Retour</v-btn>
-      <v-btn color="success">Sauvegarder</v-btn>
+      <v-btn color="success" @click.stop="save">Sauvegarder</v-btn>
     </v-col>
   </v-row>
   <EditEpisodeDialog ref="editEpisodeDialog" />
@@ -53,9 +53,11 @@ import router from "../../router";
 import { Episode } from "../../models/Episode";
 import { NavigationConst } from "../../router/routeConst";
 import EditEpisodeDialog from "./components/EditEpisodeDialog.vue";
+import { SerieFull } from "../../models/SerieFull";
 
 const serieStore = useSerieStore();
 
+const isLoading = ref(false);
 const nomSerie = ref("");
 const episodes = ref<Episode[]>([]);
 const editEpisodeDialog = ref<InstanceType<typeof EditEpisodeDialog> | null>(
@@ -86,4 +88,25 @@ const addEpisode = async () => {
   const episodeToAdd = await editEpisodeDialog.value?.openNew();
   if (episodeToAdd) episodes.value.push(episodeToAdd);
 };
+
+async function save() {
+  try {
+    isLoading.value = true;
+    const serieToUpdate = new SerieFull();
+    if (!serieStore.serie) return;
+    serieToUpdate.id = serieStore.serie?.id;
+    serieToUpdate.est_archive = serieStore.serie.est_archive;
+    serieToUpdate.nom = nomSerie.value;
+    serieToUpdate.episodes = episodes.value;
+    serieStore.updateFull(serieToUpdate);
+    router.replace({
+      name: NavigationConst.nameSerie,
+      params: { id: serieToUpdate.id },
+    });
+  } catch (err: any) {
+    console.error("Impossible de modifier la série", err);
+  } finally {
+    isLoading.value = false;
+  }
+}
 </script>

@@ -35,7 +35,14 @@ export abstract class SerieApi {
     }
 
     static async update(serie: SerieList) {
-        await axios.put<SerieListDTO>(`${SerieApi.API_URL}${serie.id}/`, serie, {
+        await axios.put<SerieListDTO>(`${SerieApi.API_URL}${serie.id}/update/`, serie, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+    }
+
+    static async updateFull(serie: SerieFull) {
+        await axios.put<SerieFullDTO>(`${SerieApi.API_URL}${serie.id}/update-episodes/`, serie, {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });

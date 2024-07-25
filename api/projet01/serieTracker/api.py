@@ -86,6 +86,25 @@ class SerieDetailView(mixins.UpdateModelMixin, GenericAPIView):
         serializer = self.get_serializer(serie)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
+class SerieInfoUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+    queryset = Serie.objects.all()
+    serializer_class = SerieListSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+
+class SerieEpisodesUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+    queryset = Serie.objects.all()
+    serializer_class = SerieFullSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    lookup_field = 'id'
+
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
 
