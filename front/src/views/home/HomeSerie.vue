@@ -32,7 +32,17 @@
             :key="episode.id"
             :title="`Épisode ${episode.episode}`"
             :subtitle="episode.nom || 'Aucun'"
-          />
+          >
+            <template #prepend>
+              <v-btn
+                class="mr-3"
+                density="comfortable"
+                icon="mdi-pencil"
+                color="primary"
+                @click.stop="editEpisode(episode)"
+              />
+            </template>
+          </v-list-item>
         </v-list>
       </v-expansion-panel-text>
     </v-expansion-panel>
@@ -85,8 +95,17 @@ const close = () => {
 };
 
 const addEpisode = async () => {
-  const episodeToAdd = await editEpisodeDialog.value?.openNew();
+  const episodeToAdd = await editEpisodeDialog.value?.open();
   if (episodeToAdd) episodes.value.push(episodeToAdd);
+};
+
+const editEpisode = async (episode: Episode) => {
+  const episodeToEdit = await editEpisodeDialog.value?.open(episode);
+  if (episodeToEdit) {
+    episodeToEdit.id = episode.id;
+    const index = episodes.value.findIndex((ep) => ep.id === episode.id);
+    if (index !== -1) episodes.value[index] = episodeToEdit;
+  }
 };
 
 async function save() {

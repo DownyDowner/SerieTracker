@@ -91,8 +91,13 @@ const nom = ref<string | null>(null);
 
 let resolve: (value: Episode | null) => void;
 
-const openNew = () => {
-  isNew.value = true;
+const open = (value?: Episode) => {
+  if (value) {
+    isNew.value = false;
+    saison.value = value.saison;
+    episode.value = value.episode;
+    nom.value = value.nom;
+  } else isNew.value = true;
   isOpen.value = true;
   return new Promise<Episode | null>(function (res) {
     resolve = res;
@@ -117,6 +122,6 @@ const save = () => {
 };
 
 defineExpose({
-  openNew,
+  open,
 });
 </script>
