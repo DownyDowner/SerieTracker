@@ -114,3 +114,17 @@ class SerieCreateView(CreateAPIView):
     serializer_class = SerieListSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
+
+
+class ArchiveSerieView(APIView):
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            serie = Serie.objects.get(pk=pk)
+            serie.est_archive = True
+            serie.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Serie.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)

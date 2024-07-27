@@ -1,14 +1,21 @@
 <template>
   <v-row class="my-2" align="center" justify="space-between">
-    <v-col cols="6">
+    <v-col cols="6" class="d-flex">
       <v-text-field
         class="ml-3"
         v-model="nomSerie"
         label="Nom de la série"
         hide-details
       />
+      <v-chip
+        v-if="serieStore.serie?.est_archive"
+        class="ml-2 mt-1"
+        color="red"
+      >
+        La série est archivée
+      </v-chip>
     </v-col>
-    <v-col cols="6 d-flex justify-end">
+    <v-col cols="6" class="d-flex justify-end">
       <v-btn
         class="mr-3"
         prepend-icon="mdi-plus-circle"
@@ -16,6 +23,15 @@
         @click.stop="addEpisode"
       >
         Ajouter un épisode
+      </v-btn>
+      <v-btn
+        v-if="!serieStore.serie?.est_archive"
+        class="mr-3"
+        prepend-icon="mdi-minus-circle"
+        color="error"
+        @click.stop="archiveSerie"
+      >
+        Archiver la série
       </v-btn>
     </v-col>
   </v-row>
@@ -84,12 +100,16 @@ const groupedEpisodes = computed(() => {
 });
 
 onMounted(async () => {
+  loadById();
+});
+
+const loadById = async () => {
   const idSerie = router.currentRoute.value.params.id as string;
   await serieStore.getSerieById(Number(idSerie));
   if (!serieStore.serie) return;
   nomSerie.value = serieStore.serie?.nom;
   episodes.value = serieStore.serie.episodes;
-});
+};
 
 const close = () => {
   serieStore.serie = null;
@@ -102,6 +122,17 @@ const addEpisode = async () => {
     episodes.value.push(episodeToAdd);
     toast.success("L'épisode a été ajouté");
   }
+};
+
+const archiveSerie = async () => {
+  if (!serieStore.serie?.id) return;
+  await serieStore.archive(serieStore.serie.id);
+  await router.replace({
+    name: NavigationConst.nameSerie,
+    params: { id: serieStore.serie.id },
+  });
+  await loadById();
+  toast.success("La série a été archivée");
 };
 
 const editEpisode = async (episode: Episode) => {
@@ -130,6 +161,7 @@ async function save() {
       name: NavigationConst.nameSerie,
       params: { id: serieToUpdate.id },
     });
+    toast.success("La série a été sauvegardée");
   } catch (err: any) {
     console.error("Impossible de modifier la série", err);
   } finally {

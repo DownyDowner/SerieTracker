@@ -47,4 +47,11 @@ export abstract class SerieApi {
             responseType: 'json',
         });
     }
+
+    static async archive(id: number) {
+        await axios.delete(`${SerieApi.API_URL}${id}/archive/`, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+    }
 }

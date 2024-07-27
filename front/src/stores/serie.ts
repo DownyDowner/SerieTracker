@@ -71,6 +71,18 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function archive(id: number) {
+    try {
+      isLoading.value = true;
+      await SerieApi.archive(id)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
@@ -80,5 +92,6 @@ export const useSerieStore = defineStore('serie', () => {
     create,
     update,
     updateFull,
+    archive,
   };
 });
