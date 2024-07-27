@@ -49,6 +49,8 @@ import EditSerieDialog from "./components/EditSerieDialog.vue";
 import { SerieList } from "../../models/SerieList";
 import { NavigationConst } from "../../router/routeConst";
 import router from "../../router";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const serieStore = useSerieStore();
 
@@ -75,5 +77,6 @@ function openDetailSerie(model: SerieList) {
 
 async function onSerieEdited() {
   await serieStore.getActiveSeries();
+  toast.success("La série a été sauvegardée");
 }
 </script>

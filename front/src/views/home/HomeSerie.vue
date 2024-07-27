@@ -64,6 +64,8 @@ import { Episode } from "../../models/Episode";
 import { NavigationConst } from "../../router/routeConst";
 import EditEpisodeDialog from "./components/EditEpisodeDialog.vue";
 import { SerieFull } from "../../models/SerieFull";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const serieStore = useSerieStore();
 
@@ -96,7 +98,10 @@ const close = () => {
 
 const addEpisode = async () => {
   const episodeToAdd = await editEpisodeDialog.value?.open();
-  if (episodeToAdd) episodes.value.push(episodeToAdd);
+  if (episodeToAdd) {
+    episodes.value.push(episodeToAdd);
+    toast.success("L'épisode a été ajouté");
+  }
 };
 
 const editEpisode = async (episode: Episode) => {
@@ -104,7 +109,10 @@ const editEpisode = async (episode: Episode) => {
   if (episodeToEdit) {
     episodeToEdit.id = episode.id;
     const index = episodes.value.findIndex((ep) => ep.id === episode.id);
-    if (index !== -1) episodes.value[index] = episodeToEdit;
+    if (index !== -1) {
+      episodes.value[index] = episodeToEdit;
+      toast.success("L'épisode a été modifié");
+    }
   }
 };
 
