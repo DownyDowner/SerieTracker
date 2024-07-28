@@ -16,6 +16,15 @@ export abstract class SerieApi {
         return response.data.map(d => new SerieList(d));
     }
 
+    static async getArchiveSeries(): Promise<SerieList[]> {
+        const response = await axios.get<SerieListDTO[]>(`${SerieApi.API_URL}archive/` , {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+        
+        return response.data.map(d => new SerieList(d));
+    }
+
     static async getById(id: number): Promise<SerieFull> {
         const response = await axios.get<SerieFullDTO>(`${SerieApi.API_URL}${id}/`, {
             headers: { 'Authorization': 'Token ' + this.authStore.token },

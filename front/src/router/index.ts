@@ -37,6 +37,25 @@ const routes: Array<RouteRecordRaw> = [
         }
       ],
     },
+    {
+      path: NavigationConst.routeArchive,
+      component: LayoutConnected,
+      beforeEnter: checkIsAuthenticated,
+      children: [
+        {
+          path: '',
+          name: NavigationConst.nameArchive,
+          component: () => import('../views/home/Archive.vue'),
+          meta: { title: NavigationConst.titleArchive },
+        },
+        {
+          path: NavigationConst.routeSerie,
+          name: NavigationConst.nameSerie,
+          component: () => import('../views/home/HomeSerie.vue'),
+          meta: { title: NavigationConst.titleSerie },
+        },
+      ],
+    },
 ]
 
 const router = createRouter({

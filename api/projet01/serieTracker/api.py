@@ -74,6 +74,15 @@ class ActiveSerieListView(ListAPIView):
         return Serie.objects.filter(est_archive=False).order_by('nom')
 
 
+class ArchiveSerieListView(ListAPIView):
+    serializer_class = SerieListSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Serie.objects.filter(est_archive=True).order_by('nom')
+
+
 class SerieDetailView(mixins.UpdateModelMixin, GenericAPIView):
     queryset = Serie.objects.all()
     serializer_class = SerieFullSerializer

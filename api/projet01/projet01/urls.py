@@ -27,6 +27,7 @@ urlpatterns = [
     path('api-auth/user/', api.UserDetailView.as_view(), name='user-detail'),
     path('series/', api.SerieCreateView.as_view(), name='serie-create'),
     path('series/active/', api.ActiveSerieListView.as_view(), name='series-active-list'),
+    path('series/archive/', api.ArchiveSerieListView.as_view(), name='series-archive-list'),
     path('series/<int:id>/', api.SerieDetailView.as_view(), name='serie-detail'),
     path('series/<int:id>/update/', api.SerieInfoUpdateView.as_view(), name='serie-title-update'),
     path('series/<int:id>/update-episodes/', api.SerieEpisodesUpdateView.as_view(), name='serie-episodes-update'),

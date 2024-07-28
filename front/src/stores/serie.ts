@@ -8,12 +8,25 @@ export const useSerieStore = defineStore('serie', () => {
 
   const isLoading = ref(false);
   const activeSeries: Ref<SerieList[]> = ref([]);
+  const archiveSeries: Ref<SerieList[]> = ref([]);
   const serie: Ref<SerieFull | null> = ref(null);
 
   async function getActiveSeries(): Promise<void> {
     try {
       isLoading.value = true;
       activeSeries.value = await SerieApi.getActiveSeries();
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  async function getArchiveSeries(): Promise<void> {
+    try {
+      isLoading.value = true;
+      archiveSeries.value = await SerieApi.getArchiveSeries();
     } catch (error) {
       console.error(error);
       throw error;
@@ -86,8 +99,10 @@ export const useSerieStore = defineStore('serie', () => {
   return {
     isLoading,
     activeSeries,
+    archiveSeries,
     serie,
     getActiveSeries,
+    getArchiveSeries,
     getSerieById,
     create,
     update,

@@ -18,6 +18,10 @@ export class NavigationConst {
 
     public static readonly routeSerie = '/serie/:id'
     public static readonly nameSerie = 'Serie'
-    public static readonly titleSerie = 'Série'
+    public static readonly titleSerie = 'Séries'
+
+    public static readonly routeArchive = '/archive'
+    public static readonly nameArchive = 'Archive'
+    public static readonly titleArchive = 'Séries archivées'
   }
   

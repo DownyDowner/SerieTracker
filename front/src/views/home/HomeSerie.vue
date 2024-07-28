@@ -6,6 +6,7 @@
         v-model="nomSerie"
         label="Nom de la série"
         hide-details
+        :readonly="serieStore.serie?.est_archive"
       />
       <v-chip
         v-if="serieStore.serie?.est_archive"
@@ -15,7 +16,11 @@
         La série est archivée
       </v-chip>
     </v-col>
-    <v-col cols="6" class="d-flex justify-end">
+    <v-col
+      v-if="!serieStore.serie?.est_archive"
+      cols="6"
+      class="d-flex justify-end"
+    >
       <v-btn
         class="mr-3"
         prepend-icon="mdi-plus-circle"
@@ -25,7 +30,6 @@
         Ajouter un épisode
       </v-btn>
       <v-btn
-        v-if="!serieStore.serie?.est_archive"
         class="mr-3"
         prepend-icon="mdi-minus-circle"
         color="error"
@@ -49,7 +53,7 @@
             :title="`Épisode ${episode.episode}`"
             :subtitle="episode.nom || 'Aucun'"
           >
-            <template #prepend>
+            <template #prepend v-if="!serieStore.serie?.est_archive">
               <v-btn
                 class="mr-3"
                 density="comfortable"
@@ -66,7 +70,12 @@
   <v-row no-gutters class="mt-2">
     <v-col class="d-flex justify-end align-center">
       <v-btn class="ma-2" color="grey" @click.stop="close">Retour</v-btn>
-      <v-btn color="success" @click.stop="save">Sauvegarder</v-btn>
+      <v-btn
+        v-if="!serieStore.serie?.est_archive"
+        color="success"
+        @click.stop="save"
+        >Sauvegarder</v-btn
+      >
     </v-col>
   </v-row>
   <EditEpisodeDialog ref="editEpisodeDialog" />
@@ -112,8 +121,10 @@ const loadById = async () => {
 };
 
 const close = () => {
+  serieStore.serie?.est_archive
+    ? router.push({ name: NavigationConst.nameArchive })
+    : router.push({ name: NavigationConst.nameHome });
   serieStore.serie = null;
-  router.push({ name: NavigationConst.nameHome });
 };
 
 const addEpisode = async () => {
