@@ -33,4 +33,5 @@ urlpatterns = [
     path('series/<int:id>/update-episodes/', api.SerieEpisodesUpdateView.as_view(), name='serie-episodes-update'),
     path('series/<int:pk>/archive/', api.ArchiveSerieView.as_view(), name='archive-serie'),
     path('series/suivies/', api.FollowedSeriesList.as_view(), name='series-suivies'),
+    path('series/suivies-create/', api.FollowedSeriesCreateView.as_view(), name='suivi-create'),
 ]

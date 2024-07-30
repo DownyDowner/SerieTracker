@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Episode, Serie
+from .models import Episode, Serie, Suivi
 from django.contrib.auth import get_user_model
 
 
@@ -60,3 +60,9 @@ class SerieFullSerializer(serializers.ModelSerializer):
                 instance.episodes.add(new_episode)
 
         return instance
+
+
+class SuiviSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Suivi
+        fields = ['serie']
