@@ -63,4 +63,13 @@ export abstract class SerieApi {
             responseType: 'json',
         });
     }
+
+    static async followedSeries(): Promise<SerieList[]> {
+        const response = await axios.get<SerieListDTO[]>(`${SerieApi.API_URL}suivies/`, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+
+        return response.data.map(d => new SerieList(d));
+    }
 }

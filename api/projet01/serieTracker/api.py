@@ -8,7 +8,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Episode, Serie
+from .models import Episode, Serie, Suivi
 from .serializers import SerieListSerializer, SerieFullSerializer, UtilisateurSerializer
 
 
@@ -137,3 +137,15 @@ class ArchiveSerieView(APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Serie.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class FollowedSeriesList(ListAPIView):
+    serializer_class = SerieListSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        utilisateur = self.request.user
+        suivis = Suivi.objects.filter(utilisateur=utilisateur)
+        series_ids = suivis.values_list('serie_id', flat=True)
+        return Serie.objects.filter(id__in=series_ids)

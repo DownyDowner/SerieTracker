@@ -96,6 +96,18 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function followedSeries(): Promise<SerieList[]> {
+    try {
+      isLoading.value = true
+      return await SerieApi.followedSeries()
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
@@ -108,5 +120,6 @@ export const useSerieStore = defineStore('serie', () => {
     update,
     updateFull,
     archive,
+    followedSeries,
   };
 });

@@ -32,4 +32,5 @@ urlpatterns = [
     path('series/<int:id>/update/', api.SerieInfoUpdateView.as_view(), name='serie-title-update'),
     path('series/<int:id>/update-episodes/', api.SerieEpisodesUpdateView.as_view(), name='serie-episodes-update'),
     path('series/<int:pk>/archive/', api.ArchiveSerieView.as_view(), name='archive-serie'),
+    path('series/suivies/', api.FollowedSeriesList.as_view(), name='series-suivies'),
 ]

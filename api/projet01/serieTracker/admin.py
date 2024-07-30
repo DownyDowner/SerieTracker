@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import Utilisateur, Episode, Serie
+from .models import Utilisateur, Episode, Serie, Suivi
 
 
 # Register your models here.
@@ -17,3 +17,4 @@ class SerieAdmin(admin.ModelAdmin):
 
 admin.site.register(Utilisateur, UserAdmin)
 admin.site.register(Serie, SerieAdmin)
+admin.site.register(Suivi)
