@@ -1,3 +1,4 @@
+import { Suivi } from './../models/Suivi';
 import { SerieList } from '../models/SerieList';
 import { ref, Ref } from 'vue';
 import { defineStore } from "pinia";
@@ -108,6 +109,18 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function createFollowedSeries(suivi: Suivi): Promise<Suivi> {
+    try {
+      isLoading.value = true
+      return await SerieApi.createFollowedSeries(suivi)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
@@ -121,5 +134,6 @@ export const useSerieStore = defineStore('serie', () => {
     updateFull,
     archive,
     followedSeries,
+    createFollowedSeries,
   };
 });

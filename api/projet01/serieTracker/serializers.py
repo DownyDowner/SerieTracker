@@ -65,4 +65,4 @@ class SerieFullSerializer(serializers.ModelSerializer):
 class SuiviSerializer(serializers.ModelSerializer):
     class Meta:
         model = Suivi
-        fields = ['serie']
+        fields = ['id', 'serie']

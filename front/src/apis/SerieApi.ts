@@ -2,6 +2,7 @@ import axios from "axios";
 import { SerieList, SerieListDTO } from "../models/SerieList";
 import { useAuthenticationStore } from "../stores/authentication";
 import { SerieFull, SerieFullDTO } from "../models/SerieFull";
+import { Suivi, SuiviDTO } from "../models/Suivi";
 
 export abstract class SerieApi {
     static API_URL = "http://localhost:8000/series/";
@@ -71,5 +72,14 @@ export abstract class SerieApi {
         });
 
         return response.data.map(d => new SerieList(d));
+    }
+
+    static async createFollowedSeries(suivi: Suivi): Promise<Suivi> {
+        const response = await axios.post<SuiviDTO>(`${SerieApi.API_URL}suivies-create/`, suivi, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+
+        return new Suivi(response.data);
     }
 }
