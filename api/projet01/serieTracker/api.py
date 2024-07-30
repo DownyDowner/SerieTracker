@@ -9,7 +9,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from .models import Episode, Serie, Suivi
-from .serializers import SerieListSerializer, SerieFullSerializer, UtilisateurSerializer, SuiviSerializer
+from .serializers import SerieListSerializer, SerieFullSerializer, UtilisateurSerializer, SuiviSerializer, \
+    SuiviCreationSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -140,31 +141,19 @@ class ArchiveSerieView(APIView):
 
 
 class FollowedSeriesList(ListAPIView):
-    serializer_class = SerieListSerializer
+    serializer_class = SuiviSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         utilisateur = self.request.user
-        suivis = Suivi.objects.filter(utilisateur=utilisateur)
-        series_ids = suivis.values_list('serie_id', flat=True)
-        return Serie.objects.filter(id__in=series_ids)
+        return Suivi.objects.filter(utilisateur=utilisateur).select_related('serie').order_by('serie__nom')
 
 
 class FollowedSeriesCreateView(CreateAPIView):
-    serializer_class = SuiviSerializer
+    serializer_class = SuiviCreationSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serie_id = self.request.data.get('serie')
-        try:
-            serie = Serie.objects.get(id=serie_id)
-        except Serie.DoesNotExist:
-            raise serializer.ValidationError('Serie not found.')
-
-        utilisateur = self.request.user
-
-        if Suivi.objects.filter(utilisateur=utilisateur, serie=serie).exists():
-            raise serializer.ValidationError('Already following this serie.')
-        serializer.save(utilisateur=utilisateur)
+        serializer.save(utilisateur=self.request.user)

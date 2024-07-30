@@ -3,6 +3,7 @@ import { SerieList, SerieListDTO } from "../models/SerieList";
 import { useAuthenticationStore } from "../stores/authentication";
 import { SerieFull, SerieFullDTO } from "../models/SerieFull";
 import { Suivi, SuiviDTO } from "../models/Suivi";
+import { SuiviCreation, SuiviCreationDTO } from "../models/SuiviCreation";
 
 export abstract class SerieApi {
     static API_URL = "http://localhost:8000/series/";
@@ -65,21 +66,21 @@ export abstract class SerieApi {
         });
     }
 
-    static async followedSeries(): Promise<SerieList[]> {
-        const response = await axios.get<SerieListDTO[]>(`${SerieApi.API_URL}suivies/`, {
+    static async followedSeries(): Promise<Suivi[]> {
+        const response = await axios.get<SuiviDTO[]>(`${SerieApi.API_URL}suivies/`, {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
 
-        return response.data.map(d => new SerieList(d));
+        return response.data.map(d => new Suivi(d));
     }
 
-    static async createFollowedSeries(suivi: Suivi): Promise<Suivi> {
-        const response = await axios.post<SuiviDTO>(`${SerieApi.API_URL}suivies-create/`, suivi, {
+    static async createFollowedSeries(suivi: SuiviCreation): Promise<SuiviCreation> {
+        const response = await axios.post<SuiviCreationDTO>(`${SerieApi.API_URL}suivies-create/`, suivi, {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
 
-        return new Suivi(response.data);
+        return new SuiviCreation(response.data);
     }
 }

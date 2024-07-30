@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useSerieStore } from "../../../stores/serie";
-import { Suivi } from "../../../models/Suivi";
+import { SuiviCreation } from "../../../models/SuiviCreation";
 
 const serieStore = useSerieStore();
 
@@ -84,7 +84,7 @@ const close = () => {
 };
 
 async function save() {
-  const suivi = new Suivi();
+  const suivi = new SuiviCreation();
   if (!serie.value) return;
   suivi.serie = serie.value;
   await serieStore.createFollowedSeries(suivi);

@@ -37,7 +37,6 @@ class SerieFullSerializer(serializers.ModelSerializer):
         existing_ids = [ep.id for ep in instance.episodes.all()]
         new_ids = [item['id'] for item in episodes_data if 'id' in item]
 
-        # Remove episodes not included in the update data
         for episode in instance.episodes.all():
             if episode.id not in new_ids:
                 episode.delete()
@@ -55,7 +54,7 @@ class SerieFullSerializer(serializers.ModelSerializer):
                     saison=episode_data['saison'],
                     episode=episode_data['episode'],
                     nom=episode_data['nom'],
-                    serie=instance  # Associer l'épisode à la série actuelle
+                    serie=instance
                 )
                 instance.episodes.add(new_episode)
 
@@ -63,6 +62,22 @@ class SerieFullSerializer(serializers.ModelSerializer):
 
 
 class SuiviSerializer(serializers.ModelSerializer):
+    serie = SerieListSerializer()
+
     class Meta:
         model = Suivi
         fields = ['id', 'serie']
+
+
+class SuiviCreationSerializer(serializers.ModelSerializer):
+    serie = serializers.PrimaryKeyRelatedField(queryset=Serie.objects.all())
+
+    class Meta:
+        model = Suivi
+        fields = ['id', 'serie']
+
+    def create(self, validated_data):
+        utilisateur = self.context['request'].user
+        serie = validated_data['serie']
+        suivi, created = Suivi.objects.get_or_create(utilisateur=utilisateur, serie=serie)
+        return suivi

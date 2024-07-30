@@ -13,8 +13,16 @@
     </v-col>
   </v-row>
   <v-row class="mx-1" no-gutters>
-    <v-col v-for="serie in series" :key="serie.id" cols="12" md="4">
-      <v-card class="ma-1 text-center" :title="serie.nom"></v-card>
+    <v-col
+      v-for="followedSerie in followedSeries"
+      :key="followedSerie.id"
+      cols="12"
+      md="4"
+    >
+      <v-card
+        class="ma-1 text-center"
+        :title="followedSerie.serie.nom"
+      ></v-card>
     </v-col>
   </v-row>
   <AddFollowedSerieDialog
@@ -26,7 +34,7 @@
 <script setup lang="ts">
 import { onMounted, ref, Ref } from "vue";
 import { useSerieStore } from "../../stores/serie";
-import { SerieList } from "../../models/SerieList";
+import { Suivi } from "../../models/Suivi";
 import AddFollowedSerieDialog from "./components/AddFollowedSerieDialog.vue";
 
 const serieStore = useSerieStore();
@@ -34,14 +42,14 @@ const serieStore = useSerieStore();
 const addFollowedSerieDialog = ref<InstanceType<
   typeof AddFollowedSerieDialog
 > | null>(null);
-const series: Ref<SerieList[]> = ref([]);
+const followedSeries: Ref<Suivi[]> = ref([]);
 
 onMounted(async () => {
   await loadFollowedSeries();
 });
 
 async function loadFollowedSeries() {
-  series.value = await serieStore.followedSeries();
+  followedSeries.value = await serieStore.followedSeries();
 }
 
 function openNewFollowedSerie() {

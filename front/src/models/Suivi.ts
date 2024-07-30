@@ -1,6 +1,9 @@
+import { SerieList } from "./SerieList";
+
 export class SuiviDTO {
     id = 0;
-    serie = 0
+    serie: SerieList = new SerieList();
+    
   }
   
   export class Suivi extends SuiviDTO {

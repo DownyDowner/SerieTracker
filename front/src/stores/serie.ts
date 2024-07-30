@@ -4,6 +4,7 @@ import { ref, Ref } from 'vue';
 import { defineStore } from "pinia";
 import { SerieApi } from '../apis/SerieApi';
 import { SerieFull } from '../models/SerieFull';
+import { SuiviCreation } from '../models/SuiviCreation';
 
 export const useSerieStore = defineStore('serie', () => {
 
@@ -97,7 +98,7 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
-  async function followedSeries(): Promise<SerieList[]> {
+  async function followedSeries(): Promise<Suivi[]> {
     try {
       isLoading.value = true
       return await SerieApi.followedSeries()
@@ -109,7 +110,7 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
-  async function createFollowedSeries(suivi: Suivi): Promise<Suivi> {
+  async function createFollowedSeries(suivi: SuiviCreation): Promise<SuiviCreation> {
     try {
       isLoading.value = true
       return await SerieApi.createFollowedSeries(suivi)
