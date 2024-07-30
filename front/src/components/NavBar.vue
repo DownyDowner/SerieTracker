@@ -1,7 +1,7 @@
 <template>
   <v-app-bar flat class="text-white px-2" color="primary" density="compact">
     <v-row align="center" class="w-100 no-gutters">
-      <v-col cols="auto">
+      <v-col cols="4">
         <v-app-bar-title>
           {{ NavigationConst.nomApp }} · {{ currentTitle }}
         </v-app-bar-title>
@@ -16,6 +16,12 @@
         <v-btn @click.stop="archiveSeries" class="d-flex align-center">
           <v-icon left>mdi-archive</v-icon>
           <span>Séries archivées</span>
+        </v-btn>
+      </v-col>
+      <v-col cols="auto">
+        <v-btn @click.stop="followedSeries" class="d-flex align-center">
+          <v-icon left>mdi-check-circle</v-icon>
+          <span>Séries Suivies</span>
         </v-btn>
       </v-col>
       <v-spacer></v-spacer>
@@ -73,6 +79,10 @@ function home() {
 
 function archiveSeries() {
   router.push({ name: NavigationConst.nameArchive });
+}
+
+function followedSeries() {
+  router.push({ name: NavigationConst.nameFollowed });
 }
 
 async function logout() {

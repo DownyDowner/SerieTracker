@@ -56,6 +56,19 @@ const routes: Array<RouteRecordRaw> = [
         },
       ],
     },
+    {
+      path: NavigationConst.routeFollowed,
+      component: LayoutConnected,
+      beforeEnter: checkIsAuthenticated,
+      children: [
+        {
+          path: '',
+          name: NavigationConst.nameFollowed,
+          component: () => import('../views/followedSeries/FollowedSeries.vue'),
+          meta: { title: NavigationConst.titleFollowed },
+        },
+      ],
+    },
 ]
 
 const router = createRouter({

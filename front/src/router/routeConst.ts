@@ -23,5 +23,10 @@ export class NavigationConst {
     public static readonly routeArchive = '/archive'
     public static readonly nameArchive = 'Archive'
     public static readonly titleArchive = 'Séries archivées'
+
+    // Followed Series
+    public static readonly routeFollowed = '/followed'
+    public static readonly nameFollowed = 'Followed'
+    public static readonly titleFollowed = 'Séries suivies'
   }
   
