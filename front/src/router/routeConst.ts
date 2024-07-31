@@ -28,5 +28,9 @@ export class NavigationConst {
     public static readonly routeFollowed = '/followed'
     public static readonly nameFollowed = 'Followed'
     public static readonly titleFollowed = 'Séries suivies'
+
+    public static readonly routeFollowedDetail = '/followed/:id'
+    public static readonly nameFollowedDetail = 'FollowedDetail'
+    public static readonly titleFollowedDetail = 'Détail de la série suivie'
   }
   

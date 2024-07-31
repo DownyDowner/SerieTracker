@@ -29,6 +29,13 @@
           >
             Supprimer
           </v-btn>
+          <v-btn
+            prepend-icon="mdi-information-outline"
+            color="primary"
+            @click.stop="openDetailSerie(followedSerie.serie)"
+          >
+            Voir plus
+          </v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -49,6 +56,9 @@ import { useSerieStore } from "../../stores/serie";
 import { Suivi } from "../../models/Suivi";
 import AddFollowedSerieDialog from "./components/AddFollowedSerieDialog.vue";
 import DeleteFollowedSerieDialog from "./components/DeleteFollowedSerieDialog.vue";
+import { SerieList } from "../../models/SerieList";
+import router from "../../router";
+import { NavigationConst } from "../../router/routeConst";
 
 const serieStore = useSerieStore();
 
@@ -74,5 +84,12 @@ function openNewFollowedSerie() {
 
 function openDeleteDialog(followedSerie: Suivi) {
   deleteFollowedSerieDialog.value?.open(followedSerie);
+}
+
+function openDetailSerie(serie: SerieList) {
+  router.push({
+    name: NavigationConst.nameFollowedDetail,
+    params: { id: serie.id },
+  });
 }
 </script>

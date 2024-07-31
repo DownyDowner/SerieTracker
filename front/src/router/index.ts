@@ -67,6 +67,12 @@ const routes: Array<RouteRecordRaw> = [
           component: () => import('../views/followedSeries/FollowedSeries.vue'),
           meta: { title: NavigationConst.titleFollowed },
         },
+        {
+          path: NavigationConst.routeFollowedDetail,
+          name: NavigationConst.nameFollowedDetail,
+          component: () => import('../views/followedSeries/FollowedSeriesDetail.vue'),
+          meta: { title: NavigationConst.titleFollowedDetail },
+        },
       ],
     },
 ]
