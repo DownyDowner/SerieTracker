@@ -3,6 +3,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status, mixins
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
+from rest_framework.exceptions import NotFound
 from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404, GenericAPIView, DestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
@@ -10,7 +11,7 @@ from rest_framework.views import APIView
 
 from .models import Episode, Serie, Suivi
 from .serializers import SerieListSerializer, SerieFullSerializer, UtilisateurSerializer, SuiviSerializer, \
-    SuiviCreationSerializer
+    SuiviCreationSerializer, SerieWithEpisodesSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -166,3 +167,16 @@ class FollowedSeriesDestroyView(DestroyAPIView):
 
     def get_queryset(self):
         return self.queryset.filter(utilisateur=self.request.user)
+
+
+class SerieWithEpisodesListView(ListAPIView):
+    serializer_class = SerieWithEpisodesSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        serie_id = self.kwargs.get('pk')
+        try:
+            return Serie.objects.filter(id=serie_id)
+        except Serie.DoesNotExist:
+            raise NotFound('Series not found.')

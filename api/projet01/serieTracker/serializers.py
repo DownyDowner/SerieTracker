@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Episode, Serie, Suivi
+from .models import Episode, Serie, Suivi, Vu
 from django.contrib.auth import get_user_model
 
 
@@ -81,3 +81,29 @@ class SuiviCreationSerializer(serializers.ModelSerializer):
         serie = validated_data['serie']
         suivi, created = Suivi.objects.get_or_create(utilisateur=utilisateur, serie=serie)
         return suivi
+
+
+class EpisodeWithSeenStatusSerializer(serializers.ModelSerializer):
+    seen = serializers.SerializerMethodField()
+    seen_date = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Episode
+        fields = ['id', 'saison', 'episode', 'nom', 'seen', 'seen_date']
+
+    def get_seen(self, obj):
+        user = self.context['request'].user
+        return Vu.objects.filter(utilisateur=user, episode=obj).exists()
+
+    def get_seen_date(self, obj):
+        user = self.context['request'].user
+        vu_instance = Vu.objects.filter(utilisateur=user, episode=obj).first()
+        return vu_instance.date if vu_instance else None
+
+
+class SerieWithEpisodesSerializer(serializers.ModelSerializer):
+    episodes = EpisodeWithSeenStatusSerializer(many=True)
+
+    class Meta:
+        model = Serie
+        fields = ['id', 'nom', 'est_archive', 'episodes']

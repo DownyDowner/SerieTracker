@@ -103,6 +103,5 @@ async function deleteFollowedSerie() {
 
 defineExpose({
   open,
-  close,
 });
 </script>
