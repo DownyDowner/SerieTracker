@@ -3,7 +3,7 @@ from django.contrib.auth.hashers import make_password
 from rest_framework import status, mixins
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
-from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404, GenericAPIView
+from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404, GenericAPIView, DestroyAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -157,3 +157,12 @@ class FollowedSeriesCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(utilisateur=self.request.user)
+
+
+class FollowedSeriesDestroyView(DestroyAPIView):
+    queryset = Suivi.objects.all()
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return self.queryset.filter(utilisateur=self.request.user)

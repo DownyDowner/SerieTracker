@@ -122,6 +122,18 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function deleteFollowedSeries(id: number): Promise<void> {
+    try {
+      isLoading.value = true
+      await SerieApi.deleteFollowedSeries(id)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
@@ -136,5 +148,6 @@ export const useSerieStore = defineStore('serie', () => {
     archive,
     followedSeries,
     createFollowedSeries,
+    deleteFollowedSeries
   };
 });

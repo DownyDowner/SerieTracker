@@ -83,4 +83,11 @@ export abstract class SerieApi {
 
         return new SuiviCreation(response.data);
     }
+
+    static async deleteFollowedSeries(id: number): Promise<void> {
+        await axios.delete(`${SerieApi.API_URL}suivies-delete/${id}/`, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+    }
 }

@@ -19,15 +19,27 @@
       cols="12"
       md="4"
     >
-      <v-card
-        class="ma-1 text-center"
-        :title="followedSerie.serie.nom"
-      ></v-card>
+      <v-card class="ma-1 text-center" :title="followedSerie.serie.nom">
+        <v-card-actions class="justify-center">
+          <v-btn
+            class="mr-3"
+            prepend-icon="mdi-minus-circle"
+            color="error"
+            @click.stop="openDeleteDialog(followedSerie)"
+          >
+            Supprimer
+          </v-btn>
+        </v-card-actions>
+      </v-card>
     </v-col>
   </v-row>
   <AddFollowedSerieDialog
     ref="addFollowedSerieDialog"
     @on-serie-added="loadFollowedSeries"
+  />
+  <DeleteFollowedSerieDialog
+    ref="deleteFollowedSerieDialog"
+    @on-serie-delete="loadFollowedSeries"
   />
 </template>
 
@@ -36,11 +48,15 @@ import { onMounted, ref, Ref } from "vue";
 import { useSerieStore } from "../../stores/serie";
 import { Suivi } from "../../models/Suivi";
 import AddFollowedSerieDialog from "./components/AddFollowedSerieDialog.vue";
+import DeleteFollowedSerieDialog from "./components/DeleteFollowedSerieDialog.vue";
 
 const serieStore = useSerieStore();
 
 const addFollowedSerieDialog = ref<InstanceType<
   typeof AddFollowedSerieDialog
+> | null>(null);
+const deleteFollowedSerieDialog = ref<InstanceType<
+  typeof DeleteFollowedSerieDialog
 > | null>(null);
 const followedSeries: Ref<Suivi[]> = ref([]);
 
@@ -54,5 +70,9 @@ async function loadFollowedSeries() {
 
 function openNewFollowedSerie() {
   addFollowedSerieDialog.value?.open();
+}
+
+function openDeleteDialog(followedSerie: Suivi) {
+  deleteFollowedSerieDialog.value?.open(followedSerie);
 }
 </script>
