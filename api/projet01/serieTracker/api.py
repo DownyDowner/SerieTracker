@@ -5,7 +5,7 @@ from rest_framework.authentication import TokenAuthentication, SessionAuthentica
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import NotFound
 from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404, GenericAPIView, DestroyAPIView, \
-    RetrieveAPIView
+    RetrieveAPIView, UpdateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -86,39 +86,35 @@ class ArchiveSerieListView(ListAPIView):
         return Serie.objects.filter(est_archive=True).order_by('nom')
 
 
-class SerieDetailView(mixins.UpdateModelMixin, GenericAPIView):
+class SerieDetailView(RetrieveAPIView):
     queryset = Serie.objects.all()
     serializer_class = SerieFullSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
-    def get(self, request, *args, **kwargs):
-        serie = get_object_or_404(Serie, id=kwargs.get('id'))
-        serializer = self.get_serializer(serie)
-        return Response(serializer.data, status=status.HTTP_200_OK)
 
-
-class SerieInfoUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+class SerieInfoUpdateView(UpdateAPIView):
     queryset = Serie.objects.all()
     serializer_class = SerieListSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
     lookup_field = 'id'
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
 
-
-class SerieEpisodesUpdateView(mixins.UpdateModelMixin, GenericAPIView):
+class SerieEpisodesUpdateView(RetrieveUpdateAPIView):
     queryset = Serie.objects.all()
     serializer_class = SerieFullSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
-    lookup_field = 'id'
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
+    def update(self, request, *args, **kwargs):
+        serie = self.get_object()
+        serializer = self.get_serializer(serie, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
 
 
 class SerieCreateView(CreateAPIView):
