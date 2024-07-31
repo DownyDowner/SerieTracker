@@ -4,6 +4,7 @@ import { useAuthenticationStore } from "../stores/authentication";
 import { SerieFull, SerieFullDTO } from "../models/SerieFull";
 import { Suivi, SuiviDTO } from "../models/Suivi";
 import { SuiviCreation, SuiviCreationDTO } from "../models/SuiviCreation";
+import { SerieStatus, SerieStatusDTO } from "../models/SerieStatus";
 
 export abstract class SerieApi {
     static API_URL = "http://localhost:8000/series/";
@@ -89,5 +90,14 @@ export abstract class SerieApi {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
+    }
+
+    static async getFollowedSerieDetail(id: number): Promise<SerieStatus> {
+        const response = await axios.get<SerieStatusDTO>(`${SerieApi.API_URL}suivies/${id}/`, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+
+        return new SerieStatus(response.data)
     }
 }

@@ -5,6 +5,7 @@ import { defineStore } from "pinia";
 import { SerieApi } from '../apis/SerieApi';
 import { SerieFull } from '../models/SerieFull';
 import { SuiviCreation } from '../models/SuiviCreation';
+import { SerieStatus } from '../models/SerieStatus';
 
 export const useSerieStore = defineStore('serie', () => {
 
@@ -134,6 +135,18 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function getFollowedSerieDetail(id: number): Promise<SerieStatus> {
+    try {
+      isLoading.value = true
+      return await SerieApi.getFollowedSerieDetail(id)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
@@ -148,6 +161,7 @@ export const useSerieStore = defineStore('serie', () => {
     archive,
     followedSeries,
     createFollowedSeries,
-    deleteFollowedSeries
+    deleteFollowedSeries,
+    getFollowedSerieDetail,
   };
 });

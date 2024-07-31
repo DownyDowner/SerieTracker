@@ -2,8 +2,8 @@ import { Episode } from "./Episode";
 
 export class SerieFullDTO {
     id = 0;
-    nom = ''
-    est_archive = false
+    nom = '';
+    est_archive = false;
     episodes: Episode[] = [];
   }
   

@@ -1,83 +1,85 @@
 <template>
-  <v-row class="my-2" align="center" justify="space-between">
-    <v-col cols="6" class="d-flex">
-      <v-text-field
-        class="ml-3"
-        v-model="nomSerie"
-        label="Nom de la série"
-        hide-details
-        :readonly="serieStore.serie?.est_archive"
-      />
-      <v-chip
-        v-if="serieStore.serie?.est_archive"
-        class="ml-2 mt-1"
-        color="red"
-      >
-        La série est archivée
-      </v-chip>
-    </v-col>
-    <v-col
-      v-if="!serieStore.serie?.est_archive"
-      cols="6"
-      class="d-flex justify-end"
-    >
-      <v-btn
-        class="mr-3"
-        prepend-icon="mdi-plus-circle"
-        color="warning"
-        @click.stop="addEpisode"
-      >
-        Ajouter un épisode
-      </v-btn>
-      <v-btn
-        class="mr-3"
-        prepend-icon="mdi-minus-circle"
-        color="error"
-        @click.stop="archiveSerie"
-      >
-        Archiver la série
-      </v-btn>
-    </v-col>
-  </v-row>
-  <v-expansion-panels variant="accordion">
-    <v-expansion-panel
-      v-for="(episodes, saison) in groupedEpisodes"
-      :key="saison"
-    >
-      <v-expansion-panel-title>Saison {{ saison }}</v-expansion-panel-title>
-      <v-expansion-panel-text>
-        <v-list>
-          <v-list-item
-            v-for="episode in episodes"
-            :key="episode.id"
-            :title="`Épisode ${episode.episode}`"
-            :subtitle="episode.nom || 'Aucun'"
-          >
-            <template #prepend v-if="!serieStore.serie?.est_archive">
-              <v-btn
-                class="mr-3"
-                density="comfortable"
-                icon="mdi-pencil"
-                color="primary"
-                @click.stop="editEpisode(episode)"
-              />
-            </template>
-          </v-list-item>
-        </v-list>
-      </v-expansion-panel-text>
-    </v-expansion-panel>
-  </v-expansion-panels>
-  <v-row no-gutters class="mt-2">
-    <v-col class="d-flex justify-end align-center">
-      <v-btn class="ma-2" color="grey" @click.stop="close">Retour</v-btn>
-      <v-btn
+  <v-container>
+    <v-row class="my-2" align="center" justify="space-between">
+      <v-col cols="6" class="d-flex">
+        <v-text-field
+          class="ml-3"
+          v-model="nomSerie"
+          label="Nom de la série"
+          hide-details
+          :readonly="serieStore.serie?.est_archive"
+        />
+        <v-chip
+          v-if="serieStore.serie?.est_archive"
+          class="ml-2 mt-1"
+          color="red"
+        >
+          La série est archivée
+        </v-chip>
+      </v-col>
+      <v-col
         v-if="!serieStore.serie?.est_archive"
-        color="success"
-        @click.stop="save"
-        >Sauvegarder</v-btn
+        cols="6"
+        class="d-flex justify-end"
       >
-    </v-col>
-  </v-row>
+        <v-btn
+          class="mr-3"
+          prepend-icon="mdi-plus-circle"
+          color="warning"
+          @click.stop="addEpisode"
+        >
+          Ajouter un épisode
+        </v-btn>
+        <v-btn
+          class="mr-3"
+          prepend-icon="mdi-minus-circle"
+          color="error"
+          @click.stop="archiveSerie"
+        >
+          Archiver la série
+        </v-btn>
+      </v-col>
+    </v-row>
+    <v-expansion-panels variant="accordion">
+      <v-expansion-panel
+        v-for="(episodes, saison) in groupedEpisodes"
+        :key="saison"
+      >
+        <v-expansion-panel-title>Saison {{ saison }}</v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-list>
+            <v-list-item
+              v-for="episode in episodes"
+              :key="episode.id"
+              :title="`Épisode ${episode.episode}`"
+              :subtitle="episode.nom || 'Aucun'"
+            >
+              <template #prepend v-if="!serieStore.serie?.est_archive">
+                <v-btn
+                  class="mr-3"
+                  density="comfortable"
+                  icon="mdi-pencil"
+                  color="primary"
+                  @click.stop="editEpisode(episode)"
+                />
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+    </v-expansion-panels>
+    <v-row no-gutters class="mt-2">
+      <v-col class="d-flex justify-end align-center">
+        <v-btn class="ma-2" color="grey" @click.stop="close">Retour</v-btn>
+        <v-btn
+          v-if="!serieStore.serie?.est_archive"
+          color="success"
+          @click.stop="save"
+          >Sauvegarder</v-btn
+        >
+      </v-col>
+    </v-row>
+  </v-container>
   <EditEpisodeDialog ref="editEpisodeDialog" />
 </template>
 
