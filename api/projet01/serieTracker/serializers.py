@@ -31,7 +31,6 @@ class SerieFullSerializer(serializers.ModelSerializer):
         fields = ['id', 'nom', 'est_archive', 'episodes']
 
     def update(self, instance, validated_data):
-        # Update Serie fields
         instance.nom = validated_data.get('nom', instance.nom)
         instance.est_archive = validated_data.get('est_archive', instance.est_archive)
         instance.save()
@@ -42,10 +41,12 @@ class SerieFullSerializer(serializers.ModelSerializer):
         for episode_data in episodes_data:
             episode_id = episode_data.get('id')
             if episode_id > 0:
-                episode = existing_episodes.pop(episode_id)
-                for attr, value in episode_data.items():
-                    setattr(episode, attr, value)
-                episode.save()
+                episode = existing_episodes.pop(episode_id, None)
+                if episode:
+                    episode.saison = episode_data.get('saison', episode.saison)
+                    episode.episode = episode_data.get('episode', episode.episode)
+                    episode.nom = episode_data.get('nom', episode.nom)
+                    episode.save()
             else:
                 Episode.objects.create(serie=instance, saison=episode_data.get('saison'),
                                        episode=episode_data.get('episode'), nom=episode_data.get('nom'))
