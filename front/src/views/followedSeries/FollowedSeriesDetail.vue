@@ -23,9 +23,14 @@
             <v-list-item
               v-for="episode in getEpisodesBySeason(season)"
               :key="episode.id"
-              :title="`Épisode ${episode.episode}`"
-              :subtitle="episode.nom || 'Aucun'"
             >
+              <v-list-item-title>
+                Épisode {{ episode.episode }}
+                {{ episode.nom ? ' - "' + episode.nom + '"' : "" }}
+              </v-list-item-title>
+              <v-list-item-subtitle v-if="episode.seen && episode.seen_date">
+                {{ formatDate(episode.seen_date) }}
+              </v-list-item-subtitle>
               <template #prepend>
                 <v-checkbox
                   v-model="episode.seen"
@@ -81,6 +86,12 @@ const getEpisodesBySeason = (season: number) => {
     (episode) => episode.saison === season
   );
 };
+
+function formatDate(dateString: string) {
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString();
+}
 
 function close() {
   router.push({ name: NavigationConst.nameFollowed });
