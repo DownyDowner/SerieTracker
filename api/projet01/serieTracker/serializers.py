@@ -79,12 +79,18 @@ class SuiviCreationSerializer(serializers.ModelSerializer):
 
 
 class EpisodeWithSeenStatusSerializer(serializers.ModelSerializer):
+    vu_id = serializers.SerializerMethodField()
     seen = serializers.SerializerMethodField()
     seen_date = serializers.SerializerMethodField()
 
     class Meta:
         model = Episode
-        fields = ['id', 'saison', 'episode', 'nom', 'seen', 'seen_date']
+        fields = ['id', 'saison', 'episode', 'nom', 'vu_id', 'seen', 'seen_date']
+
+    def get_vu_id(self, obj):
+        user = self.context['request'].user
+        vu_instance = Vu.objects.filter(utilisateur=user, episode=obj).first()
+        return vu_instance.id if vu_instance else None
 
     def get_seen(self, obj):
         user = self.context['request'].user

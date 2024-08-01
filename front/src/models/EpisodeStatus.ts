@@ -3,6 +3,7 @@ export class EpisodeStatusDTO {
     saison = 0;
     episode = 0;
     nom: string | null = null;
+    vu_id: number | null = null
     seen = false;
     seen_date: string | null = null;
   }
