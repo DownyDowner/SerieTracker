@@ -36,4 +36,6 @@ urlpatterns = [
     path('series/suivies-create/', api.FollowedSeriesCreateView.as_view(), name='suivi-create'),
     path('series/suivies-delete/<int:pk>/', api.FollowedSeriesDestroyView.as_view(), name='suivi-delete'),
     path('series/suivies/<int:id>/', api.SerieWithEpisodesRetrieveView.as_view(), name='series-with-episodes'),
+    path('series/vu/create/', api.VuCreateView.as_view(), name='vu-create'),
+    path('series/vu/delete/<int:pk>/', api.VuDeleteView.as_view(), name='vu-delete'),
 ]

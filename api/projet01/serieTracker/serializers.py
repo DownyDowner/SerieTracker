@@ -108,3 +108,9 @@ class SerieWithEpisodesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Serie
         fields = ['id', 'nom', 'est_archive', 'episodes']
+
+
+class VuSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Vu
+        fields = ['id', 'episode', 'date']

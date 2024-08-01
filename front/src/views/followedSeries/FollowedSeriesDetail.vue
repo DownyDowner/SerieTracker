@@ -13,8 +13,10 @@
           La série est archivée
         </v-chip>
       </v-col>
+      <v-col cols="6" class="d-flex justify-end align-center">
+        <v-btn class="ma-2" color="grey" @click.stop="close">Retour</v-btn>
+      </v-col>
     </v-row>
-
     <v-expansion-panels variant="accordion">
       <v-expansion-panel v-for="season in uniqueSeasons" :key="season">
         <v-expansion-panel-title> Saison {{ season }} </v-expansion-panel-title>
@@ -38,6 +40,7 @@
                   density="comfortable"
                   icon="mdi-pencil"
                   color="primary"
+                  @change="checkBoxChanged(episode)"
                 />
               </template>
             </v-list-item>
@@ -45,12 +48,6 @@
         </v-expansion-panel-text>
       </v-expansion-panel>
     </v-expansion-panels>
-    <v-row no-gutters class="mt-2">
-      <v-col class="d-flex justify-end align-center">
-        <v-btn class="ma-2" color="grey" @click.stop="close">Retour</v-btn>
-        <v-btn color="success" @click.stop="save"> Sauvegarder </v-btn>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
@@ -60,6 +57,10 @@ import { useSerieStore } from "../../stores/serie";
 import { SerieStatus } from "../../models/SerieStatus";
 import router from "../../router";
 import { NavigationConst } from "../../router/routeConst";
+import { EpisodeStatus } from "../../models/EpisodeStatus";
+import { Vu } from "../../models/Vu";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 const serieStore = useSerieStore();
 const serieStatus: Ref<SerieStatus> = ref(new SerieStatus());
@@ -97,5 +98,19 @@ function close() {
   router.push({ name: NavigationConst.nameFollowed });
 }
 
-function save() {}
+async function checkBoxChanged(episode: EpisodeStatus) {
+  try {
+    if (episode.seen) {
+      const vu = new Vu();
+      vu.episode = episode.id;
+      await serieStore.createVu(vu);
+    } else {
+      if (episode.vu_id) await serieStore.deleteVu(episode.vu_id);
+    }
+  } catch (err) {
+    toast.error("Problème lors de l'ajout ou suppression d'un épisode vu");
+  } finally {
+    loadSerie();
+  }
+}
 </script>

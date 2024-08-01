@@ -6,6 +6,7 @@ import { SerieApi } from '../apis/SerieApi';
 import { SerieFull } from '../models/SerieFull';
 import { SuiviCreation } from '../models/SuiviCreation';
 import { SerieStatus } from '../models/SerieStatus';
+import { Vu } from '../models/Vu';
 
 export const useSerieStore = defineStore('serie', () => {
 
@@ -147,6 +148,30 @@ export const useSerieStore = defineStore('serie', () => {
     }
   }
 
+  async function createVu(vu: Vu): Promise<Vu> {
+    try {
+      isLoading.value = true
+      return await SerieApi.createVu(vu)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading
+    }
+  }
+
+  async function deleteVu(id: number) {
+    try {
+      isLoading.value = true
+      await SerieApi.deleteVu(id)
+    } catch (error) {
+      console.error(error);
+      throw error;
+    } finally {
+      isLoading
+    }
+  }
+
   return {
     isLoading,
     activeSeries,
@@ -163,5 +188,7 @@ export const useSerieStore = defineStore('serie', () => {
     createFollowedSeries,
     deleteFollowedSeries,
     getFollowedSerieDetail,
+    createVu,
+    deleteVu,
   };
 });

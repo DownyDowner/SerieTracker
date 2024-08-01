@@ -10,9 +10,9 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Episode, Serie, Suivi
+from .models import Episode, Serie, Suivi, Vu
 from .serializers import SerieListSerializer, SerieFullSerializer, UtilisateurSerializer, SuiviSerializer, \
-    SuiviCreationSerializer, SerieWithEpisodesSerializer
+    SuiviCreationSerializer, SerieWithEpisodesSerializer, VuSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -177,3 +177,19 @@ class SerieWithEpisodesRetrieveView(RetrieveAPIView):
             return Serie.objects.get(id=serie_id)
         except Serie.DoesNotExist:
             raise NotFound('Series not found.')
+
+
+class VuCreateView(CreateAPIView):
+    serializer_class = VuSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(utilisateur=self.request.user)
+
+
+class VuDeleteView(DestroyAPIView):
+    queryset = Vu.objects.all()
+    serializer_class = VuSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]

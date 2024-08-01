@@ -5,6 +5,7 @@ import { SerieFull, SerieFullDTO } from "../models/SerieFull";
 import { Suivi, SuiviDTO } from "../models/Suivi";
 import { SuiviCreation, SuiviCreationDTO } from "../models/SuiviCreation";
 import { SerieStatus, SerieStatusDTO } from "../models/SerieStatus";
+import { Vu, VuDTO } from "../models/Vu";
 
 export abstract class SerieApi {
     static API_URL = "http://localhost:8000/series/";
@@ -99,5 +100,21 @@ export abstract class SerieApi {
         });
 
         return new SerieStatus(response.data)
+    }
+
+    static async createVu(vu: Vu): Promise<Vu> {
+        const response = await axios.post<VuDTO>(`${SerieApi.API_URL}vu/create/`, vu, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+
+        return new Vu(response.data);
+    }
+
+    static async deleteVu(id: number): Promise<void> {
+        await axios.delete(`${SerieApi.API_URL}vu/delete/${id}/`, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
     }
 }
