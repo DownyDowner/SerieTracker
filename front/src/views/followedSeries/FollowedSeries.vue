@@ -76,6 +76,13 @@ onMounted(async () => {
 
 async function loadFollowedSeries() {
   followedSeries.value = await serieStore.followedSeries();
+  await serieStore.getActiveSeries();
+  serieStore.activeSeries = serieStore.activeSeries.filter(
+    (active: SerieList) =>
+      !followedSeries.value.some(
+        (followed: Suivi) => followed.serie.id === active.id
+      )
+  );
 }
 
 function openNewFollowedSerie() {

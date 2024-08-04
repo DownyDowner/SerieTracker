@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import { useSerieStore } from "../../../stores/serie";
 import { SuiviCreation } from "../../../models/SuiviCreation";
 
@@ -65,10 +65,6 @@ const isOpen = ref(false);
 const isValid = ref(false);
 const isLoading = ref(false);
 const serie = ref<null | number>(null);
-
-onMounted(async () => {
-  serieStore.getActiveSeries();
-});
 
 const emit = defineEmits<{
   (e: "onSerieAdded"): void;
