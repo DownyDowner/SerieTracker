@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Episode, Serie, Suivi, Vu
+from .models import Episode, Serie, Suivi, Vu, Utilisateur
 from django.contrib.auth import get_user_model
 
 
@@ -114,3 +114,15 @@ class VuSerializer(serializers.ModelSerializer):
     class Meta:
         model = Vu
         fields = ['id', 'episode', 'date']
+
+
+class UtilisateurListSerializer(serializers.ModelSerializer):
+    partage_avec = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Utilisateur
+        fields = ['id', 'username', 'partage_avec']
+
+    def get_partage_avec(self, obj):
+        current_user = self.context['request'].user
+        return current_user.partage_avec.filter(id=obj.id).exists()

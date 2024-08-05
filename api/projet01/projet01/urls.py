@@ -38,4 +38,5 @@ urlpatterns = [
     path('series/suivies/<int:id>/', api.SerieWithEpisodesRetrieveView.as_view(), name='series-with-episodes'),
     path('series/vu/create/', api.VuCreateView.as_view(), name='vu-create'),
     path('series/vu/delete/<int:pk>/', api.VuDeleteView.as_view(), name='vu-delete'),
+    path('partage/', api.UtilisateurListView.as_view(), name='partage-utilisateur-list'),
 ]

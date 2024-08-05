@@ -4,15 +4,15 @@ from rest_framework import status, mixins
 from rest_framework.authentication import TokenAuthentication, SessionAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.exceptions import NotFound
-from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404, GenericAPIView, DestroyAPIView, \
+from rest_framework.generics import ListAPIView, CreateAPIView, DestroyAPIView, \
     RetrieveAPIView, UpdateAPIView, RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Episode, Serie, Suivi, Vu
+from .models import Episode, Serie, Suivi, Vu, Utilisateur
 from .serializers import SerieListSerializer, SerieFullSerializer, UtilisateurSerializer, SuiviSerializer, \
-    SuiviCreationSerializer, SerieWithEpisodesSerializer, VuSerializer
+    SuiviCreationSerializer, SerieWithEpisodesSerializer, VuSerializer, UtilisateurListSerializer
 
 
 class SignUpView(CreateAPIView):
@@ -193,3 +193,13 @@ class VuDeleteView(DestroyAPIView):
     serializer_class = VuSerializer
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
+
+
+class UtilisateurListView(ListAPIView):
+    serializer_class = UtilisateurListSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        current_user = self.request.user
+        return Utilisateur.objects.exclude(id=current_user.id)

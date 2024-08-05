@@ -35,7 +35,17 @@ class SerieAdmin(admin.ModelAdmin):
     actions = [export_series_episodes_to_csv]
 
 
-admin.site.register(Utilisateur, UserAdmin)
+class PartageAvecInline(admin.TabularInline):
+    model = Utilisateur.partage_avec.through
+    fk_name = 'from_utilisateur'
+    extra = 1
+
+
+class UtilisateurAdmin(admin.ModelAdmin):
+    inlines = [PartageAvecInline]
+
+
+admin.site.register(Utilisateur, UtilisateurAdmin)
 admin.site.register(Serie, SerieAdmin)
 admin.site.register(Suivi)
 admin.site.register(Vu)

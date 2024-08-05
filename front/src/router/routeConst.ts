@@ -32,5 +32,10 @@ export class NavigationConst {
     public static readonly routeFollowedDetail = '/followed/:id'
     public static readonly nameFollowedDetail = 'FollowedDetail'
     public static readonly titleFollowedDetail = 'Détail de la série suivie'
+
+    // Partage
+    public static readonly routeShare = '/share'
+    public static readonly nameShare = 'Share'
+    public static readonly titleShare = 'Partage'
   }
   

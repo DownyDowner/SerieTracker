@@ -75,6 +75,19 @@ const routes: Array<RouteRecordRaw> = [
         },
       ],
     },
+    {
+      path: NavigationConst.routeShare,
+      component: LayoutConnected,
+      beforeEnter: checkIsAuthenticated,
+      children: [
+        {
+          path: '',
+          name: NavigationConst.nameShare,
+          component: () => import('../views/partage/Partage.vue'),
+          meta: { title: NavigationConst.titleShare },
+        },
+      ]
+    },
 ]
 
 const router = createRouter({
