@@ -203,3 +203,29 @@ class UtilisateurListView(ListAPIView):
     def get_queryset(self):
         current_user = self.request.user
         return Utilisateur.objects.exclude(id=current_user.id)
+
+
+class AddUserToShareList(APIView):
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id, *args, **kwargs):
+        try:
+            user_to_add = Utilisateur.objects.get(id=user_id)
+            request.user.partage_avec.add(user_to_add)
+            return Response({'status': 'User added to share list'}, status=status.HTTP_200_OK)
+        except Utilisateur.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class RemoveUserFromShareList(APIView):
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, user_id, *args, **kwargs):
+        try:
+            user_to_remove = Utilisateur.objects.get(id=user_id)
+            request.user.partage_avec.remove(user_to_remove)
+            return Response({'status': 'User removed to share list'}, status=status.HTTP_200_OK)
+        except Utilisateur.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)

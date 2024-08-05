@@ -14,4 +14,18 @@ export abstract class PartageApi {
         
         return response.data.map(d => new UtilisateurList(d));
     }
+
+    static async addUserFromShareList(userId: number): Promise<void> {
+        await axios.post(`${PartageApi.API_URL}add/${userId}/`, {} , {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+    }
+
+    static async removeUserFromShareList(userId: number): Promise<void> {
+        await axios.post(`${PartageApi.API_URL}remove/${userId}/`, {} , {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+    }
 }

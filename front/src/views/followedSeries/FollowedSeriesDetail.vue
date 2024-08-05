@@ -110,7 +110,7 @@ async function checkBoxChanged(episode: EpisodeStatus) {
   } catch (err) {
     toast.error("Problème lors de l'ajout ou suppression d'un épisode vu");
   } finally {
-    loadSerie();
+    await loadSerie();
   }
 }
 </script>

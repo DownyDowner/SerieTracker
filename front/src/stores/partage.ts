@@ -17,9 +17,35 @@ export const usePartageStore = defineStore('partage', () => {
             isLoading.value = false
         }
     }
+
+    async function addUserFromShareList(id: number) {
+        try {
+            isLoading.value = true
+            await PartageApi.addUserFromShareList(id)
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            isLoading.value = false
+        }
+    }
+
+    async function removeUserFromShareList(id: number) {
+        try {
+            isLoading.value = true
+            await PartageApi.removeUserFromShareList(id)
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            isLoading.value = false
+        }
+    }
   
     return {
-        getUtilisateursPartageAvec
+        getUtilisateursPartageAvec,
+        addUserFromShareList,
+        removeUserFromShareList,
     };
   });
   
