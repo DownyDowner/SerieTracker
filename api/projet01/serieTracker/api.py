@@ -229,3 +229,16 @@ class RemoveUserFromShareList(APIView):
             return Response({'status': 'User removed to share list'}, status=status.HTTP_200_OK)
         except Utilisateur.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+
+class UserSeriesListAPIView(ListAPIView):
+    serializer_class = SerieWithEpisodesSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']
+        user = Utilisateur.objects.get(id=user_id)
+        suivis = Suivi.objects.filter(utilisateur=user)
+        series = Serie.objects.filter(id__in=[suivi.serie.id for suivi in suivis])
+        return series

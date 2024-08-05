@@ -41,4 +41,5 @@ urlpatterns = [
     path('partage/', api.UtilisateurListView.as_view(), name='partage-utilisateur-list'),
     path('partage/add/<int:user_id>/', api.AddUserToShareList.as_view(), name='add_user_to_share_list'),
     path('partage/remove/<int:user_id>/', api.RemoveUserFromShareList.as_view(), name='remove_user_from_share_list'),
+    path('partage/<int:user_id>/', api.UserSeriesListAPIView.as_view(), name='user-series-list'),
 ]
