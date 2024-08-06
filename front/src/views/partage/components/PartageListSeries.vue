@@ -103,7 +103,6 @@ async function loadSeries() {
   try {
     if (userId.value)
       seriesList.value = await partageStore.getUserSeriesList(userId.value);
-    console.log(userId.value, seriesList.value);
   } catch (error) {
     toast.error("Problème lors de l'affichage des séries");
   }
