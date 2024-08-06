@@ -7,8 +7,8 @@ export abstract class PartageApi {
     static API_URL = "http://localhost:8000/partage/";
     static authStore = useAuthenticationStore()
 
-    static async getUtilisateursPartageAvec(): Promise<UtilisateurList[]> {
-        const response = await axios.get<UtilisateurListDTO[]>(`${PartageApi.API_URL}` , {
+    static async getAllUsers(): Promise<UtilisateurList[]> {
+        const response = await axios.get<UtilisateurListDTO[]>(`${PartageApi.API_URL}all-users/` , {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
@@ -28,6 +28,15 @@ export abstract class PartageApi {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
+    }
+
+    static async getSharedUsers(): Promise<UtilisateurList[]> {
+        const response = await axios.get<UtilisateurListDTO[]>(`${PartageApi.API_URL}` , {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+        
+        return response.data.map(d => new UtilisateurList(d));
     }
 
     static async getUserSeriesList(userId: number): Promise<SerieStatus[]> {

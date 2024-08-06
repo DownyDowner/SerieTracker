@@ -93,7 +93,7 @@ const groupEpisodesBySeason = (episodes: EpisodeStatus[]) => {
 
 async function loadUsers() {
   try {
-    usersList.value = await partageStore.getUtilisateursPartageAvec();
+    usersList.value = await partageStore.getSharedUsers();
   } catch (error) {
     toast.error("Problème lors de l'affichage des utilisateurs dans le select");
   }

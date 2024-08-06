@@ -28,8 +28,7 @@ onMounted(async () => {
 });
 
 async function loadUsers() {
-  utilisateursPartageList.value =
-    await partageStore.getUtilisateursPartageAvec();
+  utilisateursPartageList.value = await partageStore.getAllUsers();
 }
 
 async function checkboxChanged(user: UtilisateurList) {

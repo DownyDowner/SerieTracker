@@ -210,6 +210,16 @@ class UtilisateurListView(ListAPIView):
         return Utilisateur.objects.exclude(id=current_user.id).order_by('username')
 
 
+class UtilisateurPartageListAPIView(ListAPIView):
+    serializer_class = UtilisateurListSerializer
+    authentication_classes = [TokenAuthentication, SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        current_user = self.request.user
+        return Utilisateur.objects.filter(partage_avec=current_user).order_by('username')
+
+
 class AddUserToShareList(APIView):
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]

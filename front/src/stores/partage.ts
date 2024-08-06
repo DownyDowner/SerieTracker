@@ -6,10 +6,10 @@ export const usePartageStore = defineStore('partage', () => {
 
     const isLoading = ref(false);
     
-    async function getUtilisateursPartageAvec() {
+    async function getAllUsers() {
         try {
             isLoading.value = true
-            return await PartageApi.getUtilisateursPartageAvec()
+            return await PartageApi.getAllUsers()
         } catch (error) {
             console.error(error);
             throw error;
@@ -42,6 +42,18 @@ export const usePartageStore = defineStore('partage', () => {
         }
     }
 
+    async function getSharedUsers() {
+        try {
+            isLoading.value = true
+            return await PartageApi.getSharedUsers()
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            isLoading.value = false
+        }
+    }
+
     async function getUserSeriesList(id: number) {
         try {
             isLoading.value = true
@@ -55,9 +67,10 @@ export const usePartageStore = defineStore('partage', () => {
     }
   
     return {
-        getUtilisateursPartageAvec,
+        getAllUsers,
         addUserFromShareList,
         removeUserFromShareList,
+        getSharedUsers,
         getUserSeriesList,
     };
   });
