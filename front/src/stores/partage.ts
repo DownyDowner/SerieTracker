@@ -41,11 +41,24 @@ export const usePartageStore = defineStore('partage', () => {
             isLoading.value = false
         }
     }
+
+    async function getUserSeriesList(id: number) {
+        try {
+            isLoading.value = true
+            return await PartageApi.getUserSeriesList(id)
+        } catch (error) {
+            console.error(error);
+            throw error;
+        } finally {
+            isLoading.value = false
+        }
+    }
   
     return {
         getUtilisateursPartageAvec,
         addUserFromShareList,
         removeUserFromShareList,
+        getUserSeriesList,
     };
   });
   

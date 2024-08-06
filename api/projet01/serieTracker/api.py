@@ -202,7 +202,7 @@ class UtilisateurListView(ListAPIView):
 
     def get_queryset(self):
         current_user = self.request.user
-        return Utilisateur.objects.exclude(id=current_user.id)
+        return Utilisateur.objects.exclude(id=current_user.id).order_by('username')
 
 
 class AddUserToShareList(APIView):
@@ -237,8 +237,8 @@ class UserSeriesListAPIView(ListAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        user_id = self.kwargs['user_id']
+        user_id = self.kwargs.get('user_id')
         user = Utilisateur.objects.get(id=user_id)
-        suivis = Suivi.objects.filter(utilisateur=user)
-        series = Serie.objects.filter(id__in=[suivi.serie.id for suivi in suivis])
-        return series
+        suivis = Suivi.objects.filter(utilisateur=user).values_list('serie', flat=True)
+
+        return Serie.objects.filter(id__in=suivis).prefetch_related('episodes')

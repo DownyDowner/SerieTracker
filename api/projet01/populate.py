@@ -44,15 +44,15 @@ episode2_bb = Episode.objects.create(saison=1, episode=2, nom='Episode 2', serie
 episode1_lost = Episode.objects.create(saison=1, episode=1, nom='Episode 1', serie=lost)
 episode2_lost = Episode.objects.create(saison=1, episode=2, nom='Episode 2', serie=lost)
 
-# Vues
-Vu.objects.create(utilisateur=utilisateur1, episode=episode1_wd)
-Vu.objects.create(utilisateur=utilisateur2, episode=episode1_pb)
-Vu.objects.create(utilisateur=admin, episode=episode1_got)
-
 # Suivis
 Suivi.objects.create(utilisateur=utilisateur1, serie=walking_dead)
 Suivi.objects.create(utilisateur=utilisateur2, serie=prison_break)
 Suivi.objects.create(utilisateur=admin, serie=game_of_thrones)
+
+# Vues
+Vu.objects.create(utilisateur=utilisateur1, episode=episode1_wd)
+Vu.objects.create(utilisateur=utilisateur2, episode=episode1_pb)
+Vu.objects.create(utilisateur=admin, episode=episode1_got)
 
 # Relations de partage
 utilisateur1.partage_avec.add(utilisateur2)

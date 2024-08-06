@@ -1,5 +1,5 @@
 <template>
-  <v-card title="Partage avec">
+  <v-card title="Partage avec" class="fill-height">
     <v-card-text>
       <v-checkbox
         v-for="utilisateur in utilisateursPartageList"

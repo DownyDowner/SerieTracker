@@ -1,6 +1,7 @@
 import axios from "axios";
 import { UtilisateurList, UtilisateurListDTO } from "../models/UtilisateurList";
 import { useAuthenticationStore } from "../stores/authentication";
+import { SerieStatus, SerieStatusDTO } from "../models/SerieStatus";
 
 export abstract class PartageApi {
     static API_URL = "http://localhost:8000/partage/";
@@ -27,5 +28,14 @@ export abstract class PartageApi {
             headers: { 'Authorization': 'Token ' + this.authStore.token },
             responseType: 'json',
         });
+    }
+
+    static async getUserSeriesList(userId: number): Promise<SerieStatus[]> {
+        const response = await axios.get<SerieStatusDTO[]>(`${PartageApi.API_URL}${userId}/`, {
+            headers: { 'Authorization': 'Token ' + this.authStore.token },
+            responseType: 'json',
+        });
+
+        return response.data.map(d => new SerieStatus(d));
     }
 }
