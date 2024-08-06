@@ -178,6 +178,11 @@ class SerieWithEpisodesRetrieveView(RetrieveAPIView):
         except Serie.DoesNotExist:
             raise NotFound('Series not found.')
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['target_user'] = self.request.user
+        return context
+
 
 class VuCreateView(CreateAPIView):
     serializer_class = VuSerializer
@@ -236,9 +241,17 @@ class UserSeriesListAPIView(ListAPIView):
     authentication_classes = [TokenAuthentication, SessionAuthentication]
     permission_classes = [IsAuthenticated]
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.target_user = None
+
     def get_queryset(self):
         user_id = self.kwargs.get('user_id')
-        user = Utilisateur.objects.get(id=user_id)
-        suivis = Suivi.objects.filter(utilisateur=user).values_list('serie', flat=True)
-
+        self.target_user = Utilisateur.objects.get(id=user_id)
+        suivis = Suivi.objects.filter(utilisateur=self.target_user).values_list('serie', flat=True)
         return Serie.objects.filter(id__in=suivis).prefetch_related('episodes')
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context['target_user'] = self.target_user
+        return context

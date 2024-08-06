@@ -88,16 +88,16 @@ class EpisodeWithSeenStatusSerializer(serializers.ModelSerializer):
         fields = ['id', 'saison', 'episode', 'nom', 'vu_id', 'seen', 'seen_date']
 
     def get_vu_id(self, obj):
-        user = self.context['request'].user
+        user = self.context['target_user']
         vu_instance = Vu.objects.filter(utilisateur=user, episode=obj).first()
         return vu_instance.id if vu_instance else None
 
     def get_seen(self, obj):
-        user = self.context['request'].user
+        user = self.context['target_user']
         return Vu.objects.filter(utilisateur=user, episode=obj).exists()
 
     def get_seen_date(self, obj):
-        user = self.context['request'].user
+        user = self.context['target_user']
         vu_instance = Vu.objects.filter(utilisateur=user, episode=obj).first()
         return vu_instance.date if vu_instance else None
 
