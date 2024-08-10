@@ -1,0 +1,30 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: DB_POSTGRES
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  back:
+    build: ./api
+    container_name: BACK_DJANGO
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  front:
+    build:
+      context: ./front
+    container_name: FRONT_VUE
+    ports:
+      - "5173:5173"
+    depends_on:
+      - back
+
+volumes:
+  postgres_data:
