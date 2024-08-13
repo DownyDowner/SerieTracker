@@ -6,6 +6,8 @@ services:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
@@ -18,13 +20,23 @@ services:
       - db
 
   front:
-    build:
-      context: ./front
+    build: ./front
     container_name: FRONT_VUE
     ports:
       - "5173:5173"
     depends_on:
       - back
 
+  backup:
+    build: ./backup
+    container_name: BACKUP_SERVICE
+    volumes:
+      - backup_data:/backup
+      - borg_repo:/borg-repo
+    depends_on:
+      - db
+
 volumes:
   postgres_data:
+  backup_data:
+  borg_repo:
