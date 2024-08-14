@@ -19,6 +19,7 @@
             v-model="authModel.username"
             autofocus
             :rules="stringRules"
+            data-cy="username-input"
           />
           <v-text-field
             class="mb-2"
@@ -31,10 +32,17 @@
             :rules="stringRules"
             @keypress.enter="login"
             @click:append-inner="showPassword = !showPassword"
+            data-cy="password-input"
           />
         </v-form>
 
-        <v-btn color="primary" block :disabled="!isValid" @click="login">
+        <v-btn
+          color="primary"
+          block
+          :disabled="!isValid"
+          @click="login"
+          data-cy="login-button"
+        >
           Connexion
         </v-btn>
         <v-btn
@@ -42,6 +50,7 @@
           color="grey-lighten-3 mt-1"
           variant="flat"
           block
+          data-cy="create-account-button"
         >
           Créer un compte
         </v-btn>
@@ -51,6 +60,7 @@
         type="error"
         class="mt-2"
         dismissible
+        data-cy="error-message"
       >
         {{ authModel.errorMessages }}
       </v-alert>
