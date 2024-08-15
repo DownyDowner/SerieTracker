@@ -30,6 +30,7 @@ services:
   backup:
     build: ./backup
     container_name: BACKUP_SERVICE
+    restart: on-failure
     volumes:
       - backup_data:/backup
       - borg_repo:/borg-repo
