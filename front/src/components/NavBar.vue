@@ -101,6 +101,7 @@
           size="small"
           variant="flat"
           @click.stop="logout"
+          data-cy="logout-button"
         >
           <v-icon color="primary">mdi-logout</v-icon>
         </v-btn>
