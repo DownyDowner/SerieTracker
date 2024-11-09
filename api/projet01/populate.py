@@ -17,7 +17,7 @@ Suivi.objects.all().delete()
 # Utilisateurs
 admin = Utilisateur.objects.create_superuser(username='admin', password='admin')
 utilisateur1 = Utilisateur.objects.create_user(username='boris', password='test')
-utilisateur2 = Utilisateur.objects.create_user(username='vspies', password='test')
+utilisateur2 = Utilisateur.objects.create_user(username='downy', password='test')
 
 # Séries non archivées
 walking_dead = Serie.objects.create(nom='The Walking Dead')

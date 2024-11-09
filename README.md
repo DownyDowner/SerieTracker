@@ -1,5 +1,3 @@
-# Projet web - Seconde session
-
 Ce projet est une application web composée de trois dossiers principaux :
 
 - **api** : Backend en Django
@@ -47,7 +45,7 @@ L'application est préconfigurée avec les utilisateurs suivants :
         Mot de passe : admin
 
     Utilisateur lambda 1
-        Utilisateur : vspies
+        Utilisateur : downy
         Mot de passe : test
 
     Utilisateur lambda 2
