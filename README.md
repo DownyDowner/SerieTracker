@@ -1,27 +1,30 @@
-Ce projet est une application web composée de trois dossiers principaux :
 
-- **api** : Backend en Django
-- **front** : Frontend en Vue.js avec Vuetify.
-- **backup** : Scripts de sauvegarde.
+# Project Overview
 
-Le projet utilise Docker et Docker Compose pour gérer et orchestrer les différents services.
+This project is a web application composed of three main directories:
 
-## Structure du Projet
+- **api**: Backend using Django.
+- **front**: Frontend using Vue.js with Vuetify.
+- **backup**: Backup scripts.
 
-- `api/` : Contient l'application Django.
-- `front/` : Contient l'application Vue.js.
-- `backup/` : Contient les scripts pour les opérations de sauvegarde.
+The project uses Docker and Docker Compose to manage and orchestrate the different services.
 
-## Services Docker
+## Project Structure
 
-Le projet démarre avec les services suivants via Docker Compose :
+- `api/`: Contains the Django application.
+- `front/`: Contains the Vue.js application.
+- `backup/`: Contains the backup operation scripts.
 
-1. **PostgreSQL** : Base de données pour l'application.
-2. **Backend** : Service pour l'API Django.
-3. **Frontend** : Service pour l'application Vue.js.
-4. **Backup** : Service pour la gestion des sauvegardes.
+## Docker Services
 
-## Démarrer les Services
+The project starts with the following services via Docker Compose:
+
+1. **PostgreSQL**: Database for the application.
+2. **Backend**: Service for the Django API.
+3. **Frontend**: Service for the Vue.js application.
+4. **Backup**: Service for managing backups.
+
+## Starting the Services
 
 ```
 docker compose up
@@ -29,30 +32,31 @@ docker compose up
 docker exec -it BACK_DJANGO bash -c "python /app/projet01/manage.py makemigrations serieTracker && python /app/projet01/manage.py migrate && python /app/projet01/populate.py"
 ```
 
-## Accès à l'Application
+## Accessing the Application
 
-Une fois les services démarrés, vous pouvez accéder à l'application via les URLs suivantes :
+Once the services are up and running, you can access the application via the following URLs:
 
-- Backend (API Django) : http://localhost:8000/
-- Frontend (Vue.js) : http://localhost:5173/
+- Backend (Django API): http://localhost:8000/
+- Frontend (Vue.js): http://localhost:5173/
 
-## Informations de Connexion
+## Login Information
 
-L'application est préconfigurée avec les utilisateurs suivants :
+The application is preconfigured with the following users:
 
-    Administrateur
-        Utilisateur : admin
-        Mot de passe : admin
+    Administrator
+        Username: admin
+        Password: admin
 
-    Utilisateur lambda 1
-        Utilisateur : downy
-        Mot de passe : test
+    Regular User 1
+        Username: downy
+        Password: test
 
-    Utilisateur lambda 2
-        Utilisateur : boris
-        Mot de passe : test
+    Regular User 2
+        Username: boris
+        Password: test
 
-## Arrêt des Services
+## Stopping the Services
 
-Pour arrêter tous les services Docker, exécutez :
+To stop all Docker services, run:
 `docker compose down`
+
